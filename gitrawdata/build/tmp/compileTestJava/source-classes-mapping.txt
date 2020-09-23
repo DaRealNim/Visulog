@@ -1,2 +1,0 @@
-up/visulog/gitrawdata/TestCommit.java
- up.visulog.gitrawdata.TestCommit

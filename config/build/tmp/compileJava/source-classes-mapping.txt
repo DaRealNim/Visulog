@@ -1,4 +1,0 @@
-up/visulog/config/PluginConfig.java
- up.visulog.config.PluginConfig
-up/visulog/config/Configuration.java
- up.visulog.config.Configuration

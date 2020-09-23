@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="up.visulog.analyzer.TestCountCommitsPerAuthorPlugin" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-16T07:17:45" hostname="pop-os" time="0.005">
-  <properties/>
-  <testcase name="checkCommitSum" classname="up.visulog.analyzer.TestCountCommitsPerAuthorPlugin" time="0.005"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
