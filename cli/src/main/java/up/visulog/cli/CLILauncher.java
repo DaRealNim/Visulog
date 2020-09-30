@@ -37,6 +37,8 @@ public class CLILauncher {
 
                             if (pValue.equals("countCommits")) plugins.put("countCommits", new PluginConfig() {
                             });
+                            if (pValue.equals("dummyPlugin")) plugins.put("dummyPlugin", new PluginConfig() {
+                            });
 
                             break;
                         case "--loadConfigFile":
