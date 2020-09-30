@@ -27,8 +27,9 @@ public class Analyzer {
         }
         // run all the plugins
         // TODO: try running them in parallel
-        // test
-        for (var plugin: plugins) plugin.run();
+        for (var plugin: plugins) {
+            new PluginThread(plugin).run();
+        }
 
         // store the results together in an AnalyzerResult instance and return it
         return new AnalyzerResult(plugins.stream().map(AnalyzerPlugin::getResult).collect(Collectors.toList()));
@@ -38,7 +39,21 @@ public class Analyzer {
     private Optional<AnalyzerPlugin> makePlugin(String pluginName, PluginConfig pluginConfig) {
         switch (pluginName) {
             case "countCommits" : return Optional.of(new CountCommitsPerAuthorPlugin(config));
+            case "dummyPlugin" : return Optional.of(new DummyPlugin(config));
             default : return Optional.empty();
+        }
+    }
+
+
+    private class PluginThread implements Runnable {
+        AnalyzerPlugin plugin;
+
+        public PluginThread(AnalyzerPlugin plugin) {
+            this.plugin = plugin;
+        }
+
+        public void run() {
+            this.plugin.run();
         }
     }
 
