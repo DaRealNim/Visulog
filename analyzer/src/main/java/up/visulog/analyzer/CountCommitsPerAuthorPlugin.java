@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/// Les informations à saisir :
+// cette classe designe un plugin dans notre logiciel et son role est de calculer le nombre de commits 
+// fait par chaque personne et cela en executant la methode run qui appelle la methode CountCommitsPerAuthorPlugin
+// qui prend la liste des commits du projet. Cette derniére calcule le nombre de commits fait par chaque personne 
+// et le stocke dans une variable result qui contient un hashmap<Autheur,NombreCommits>.
+
 public class CountCommitsPerAuthorPlugin implements AnalyzerPlugin {
     private final Configuration configuration;
     private Result result;
@@ -31,7 +37,8 @@ public class CountCommitsPerAuthorPlugin implements AnalyzerPlugin {
 
     @Override
     public Result getResult() {
-        if (result == null) run();
+        if (result == null)
+            run();
         return result;
     }
 
