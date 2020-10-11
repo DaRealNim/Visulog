@@ -9,14 +9,21 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class CLILauncher {
-
+    /// Les informations sur la classe :
+    // Elle contient la methode main qui permet de recupérer les args passé comme
+    // pararmètres et de les passer à la
+    // fonction makeConfigFromCommandLineArgs. Cette derniere rend une configuration
+    // selon les args donnés et le resulatat
+    // sera utilisé avec l'analyzer qui va faire la compilation et l'éxécution du
+    // plugin.
     public static void main(String[] args) {
         var config = makeConfigFromCommandLineArgs(args);
         if (config.isPresent()) {
             var analyzer = new Analyzer(config.get());
             var results = analyzer.computeResults();
             System.out.println(results.toHTML());
-        } else displayHelpAndExit();
+        } else
+            displayHelpAndExit();
     }
 
     static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
@@ -25,7 +32,8 @@ public class CLILauncher {
         for (var arg : args) {
             if (arg.startsWith("--")) {
                 String[] parts = arg.split("=");
-                if (parts.length != 2) return Optional.empty();
+                if (parts.length != 2)
+                    return Optional.empty();
                 else {
                     String pName = parts[0];
                     String pValue = parts[1];
@@ -35,8 +43,9 @@ public class CLILauncher {
 
                             // Let's just trivially do this, before the TODO is fixed:
 
-                            if (pValue.equals("countCommits")) plugins.put("countCommits", new PluginConfig() {
-                            });
+                            if (pValue.equals("countCommits"))
+                                plugins.put("countCommits", new PluginConfig() {
+                                });
 
                             break;
                         case "--loadConfigFile":
@@ -58,7 +67,7 @@ public class CLILauncher {
 
     private static void displayHelpAndExit() {
         System.out.println("Wrong command...");
-        //TODO: print the list of options and their syntax
+        // TODO: print the list of options and their syntax
         System.exit(0);
     }
 }

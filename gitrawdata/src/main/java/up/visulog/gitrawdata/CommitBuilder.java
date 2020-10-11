@@ -1,5 +1,6 @@
 package up.visulog.gitrawdata;
 
+/// cette classe permet d'avoir une instance de la classe commit.
 public class CommitBuilder {
     private final String id;
     private String author;

@@ -42,6 +42,9 @@ public class CountCommitsPerAuthorPlugin implements AnalyzerPlugin {
         return result;
     }
 
+    /// Les informations sur la classe :
+    // cette classe implemeente l'interface result et redifinit les deux methodes
+    /// getResultAsString/AsHtmlDiv
     static class Result implements AnalyzerPlugin.Result {
         private final Map<String, Integer> commitsPerAuthor = new HashMap<>();
 
