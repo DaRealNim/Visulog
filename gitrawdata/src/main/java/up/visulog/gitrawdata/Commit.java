@@ -107,12 +107,14 @@ public class Commit {
 
     @Override
     public String toString() {
-        return "Commit{" +
+        return "Commit { " +
                 "id='" + id + '\'' +
-                (mergedFrom != null ? ("mergedFrom...='" + mergedFrom + '\'') : "") + //TODO: find out if this is the only optional field
+                (mergedFrom != null ? (", mergedFrom...='" + mergedFrom + '\'') : "") + //TODO: find out if this is the only optional field
                 ", date='" + date + '\'' +
                 ", author='" + author + '\'' +
                 ", description='" + description + '\'' +
+                (stat != null ? (", statistiques='" + stat + '\'') : "") +
                 '}';
     }
+
 }
