@@ -28,7 +28,8 @@ public class Analyzer {
         // run all the plugins
         // TODO: try running them in parallel
         for (var plugin: plugins) {
-            new PluginThread(plugin).run();
+            PluginThread p = new PluginThread(plugin);
+            new Thread(p).start();
         }
 
         // store the results together in an AnalyzerResult instance and return it
@@ -40,6 +41,7 @@ public class Analyzer {
         switch (pluginName) {
             case "countCommits" : return Optional.of(new CountCommitsPerAuthorPlugin(config));
             case "dummyPlugin" : return Optional.of(new DummyPlugin(config));
+            case "dummyPlugin2" : return Optional.of(new DummyPlugin2(config));
             default : return Optional.empty();
         }
     }

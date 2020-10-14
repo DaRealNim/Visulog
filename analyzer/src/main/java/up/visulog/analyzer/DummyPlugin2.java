@@ -5,23 +5,23 @@ import up.visulog.gitrawdata.Commit;
 
 import java.util.concurrent.TimeUnit;
 
-public class DummyPlugin implements AnalyzerPlugin {
+public class DummyPlugin2 implements AnalyzerPlugin {
     private final Configuration configuration;
     private Result result;
 
-    public DummyPlugin(Configuration generalConfiguration) {
+    public DummyPlugin2(Configuration generalConfiguration) {
         this.configuration = generalConfiguration;
     }
 
     @Override
     public void run() {
         for (int i=0; i<10; i++) {
-            System.out.println("DummyPlugin_1 running...");
+            System.out.println("DummyPlugin_2 running...");
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {}
         }
-        result = new DummyPlugin.Result();
+        result = new DummyPlugin2.Result();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DummyPlugin implements AnalyzerPlugin {
             // html.append("</ul></div>");
             // return html.toString();
 
-            return "<div>Stop right there, criminal scum! You have violated the law! Pay the court a fine or serve your sentence!</div>";
+            return "<div>Hey you, you're finally awake. You were trying to cross the border? Walked right into that imperial ambush,like us and that thief over there.</div>";
         }
     }
 }
