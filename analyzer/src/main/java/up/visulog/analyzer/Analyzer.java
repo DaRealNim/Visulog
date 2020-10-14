@@ -26,7 +26,6 @@ public class Analyzer {
             plugin.ifPresent(plugins::add);
         }
         // run all the plugins
-        // TODO: try running them in parallel
         for (var plugin: plugins) {
             PluginThread p = new PluginThread(plugin);
             new Thread(p).start();
