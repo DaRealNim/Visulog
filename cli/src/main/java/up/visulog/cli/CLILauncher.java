@@ -62,7 +62,6 @@ public class CLILauncher {
 								makeConfigFromCommandLineArgs(fileConfigTable);
 							}
 							catch (IOException e) {
-								System.out.println("Something went wrong.");
 							}
 							break;
 						case "--justSaveConfigFile":
