@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class Commit {
     // FIXME: (some of) these fields could have more specialized types than String
@@ -43,6 +44,40 @@ public class Commit {
     }
 
     public static List<Commit> parseLog(BufferedReader reader) {
+        var result = new ArrayList<Commit>();
+        Optional<Commit> commit = parseCommit(reader);
+        while (commit.isPresent()) {
+            result.add(commit.get());
+            commit = parseCommit(reader);
+        }
+        return result;
+    }
+    
+    public static List<Commit> parseFromCommand(Path gitPath) {
+    	Scanner sc=new Scanner(System.in);
+    	ProcessBuilder builder;
+
+    	String com=" ";
+    	String opt=" ";
+    	com=sc.nextLine();
+    	opt=sc.nextLine();
+    	if(!(opt.equals(" "))) {
+    		builder =new ProcessBuilder("git", com,opt).directory(gitPath.toFile());
+    	}else {
+    		builder = new ProcessBuilder("git", com).directory(gitPath.toFile());
+    	}
+        Process process;
+        try {
+            process = builder.start();
+        } catch (IOException e) {
+            throw new RuntimeException("Error running \"git\".", e);
+        }
+        InputStream is = process.getInputStream();//read the process output 
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        return parse(reader);
+    }
+
+    public static List<Commit> parse(BufferedReader reader) { //prints the content of is
         var result = new ArrayList<Commit>();
         Optional<Commit> commit = parseCommit(reader);
         while (commit.isPresent()) {
