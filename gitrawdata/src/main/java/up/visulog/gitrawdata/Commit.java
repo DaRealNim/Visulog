@@ -78,7 +78,8 @@ public class Commit {
                     case "Date":
                         builder.setDate(fieldContent);
                         break;
-                    default: // TODO: warn the user that some field was ignored
+                    default: // warns the user that some field was ignored
+                    	System.out.println(fieldName+" at line 0, pos"+colonPos+" was ignored; name invalid. should be Author/Merge/Date");
                 }
                 line = input.readLine(); //prepare next iteration
                 if (line == null) parseError(); // end of stream is not supposed to happen now (commit data incomplete)
