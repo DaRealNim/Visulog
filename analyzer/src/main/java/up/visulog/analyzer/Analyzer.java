@@ -19,14 +19,14 @@ public class Analyzer {
 
     public AnalyzerResult computeResults() {
         List<AnalyzerPlugin> plugins = new ArrayList<>();
-        for (var pluginConfigEntry: config.getPluginConfigs().entrySet()) {
+        for (var pluginConfigEntry : config.getPluginConfigs().entrySet()) {
             var pluginName = pluginConfigEntry.getKey();
             var pluginConfig = pluginConfigEntry.getValue();
             var plugin = makePlugin(pluginName, pluginConfig);
             plugin.ifPresent(plugins::add);
         }
         // run all the plugins
-        for (var plugin: plugins) {
+        for (var plugin : plugins) {
             PluginThread p = new PluginThread(plugin);
             new Thread(p).start();
         }
@@ -38,13 +38,16 @@ public class Analyzer {
     // TODO: find a way so that the list of plugins is not hardcoded in this factory
     private Optional<AnalyzerPlugin> makePlugin(String pluginName, PluginConfig pluginConfig) {
         switch (pluginName) {
-            case "countCommits" : return Optional.of(new CountCommitsPerAuthorPlugin(config));
-            case "dummyPlugin" : return Optional.of(new DummyPlugin(config));
-            case "dummyPlugin2" : return Optional.of(new DummyPlugin2(config));
-            default : return Optional.empty();
+            case "countCommits":
+                return Optional.of(new CountCommitsPerAuthorPlugin(config));
+            case "dummyPlugin":
+                return Optional.of(new DummyPlugin(config));
+            case "dummyPlugin2":
+                return Optional.of(new DummyPlugin2(config));
+            default:
+                return Optional.empty();
         }
     }
-
 
     private class PluginThread implements Runnable {
         AnalyzerPlugin plugin;
