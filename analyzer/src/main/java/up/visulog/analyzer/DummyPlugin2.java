@@ -1,32 +1,32 @@
 package up.visulog.analyzer;
 
 import up.visulog.config.Configuration;
-import up.visulog.gitrawdata.Commit;
 
 import java.util.concurrent.TimeUnit;
 
-public class DummyPlugin2 implements AnalyzerPlugin {
-    private final Configuration configuration;
+public class DummyPlugin2 extends Plugin {
     private Result result;
 
     public DummyPlugin2(Configuration generalConfiguration) {
-        this.configuration = generalConfiguration;
+        super(generalConfiguration);
     }
 
     @Override
     public void run() {
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             System.out.println("DummyPlugin_2 running...");
             try {
                 TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
         result = new DummyPlugin2.Result();
     }
 
     @Override
     public Result getResult() {
-        if (result == null) run();
+        if (result == null)
+            run();
         return result;
     }
 
@@ -40,7 +40,8 @@ public class DummyPlugin2 implements AnalyzerPlugin {
         public String getResultAsHtmlDiv() {
             // StringBuilder html = new StringBuilder("<div>Commits per author: <ul>");
             // for (var item : commitsPerAuthor.entrySet()) {
-            //     html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
+            // html.append("<li>").append(item.getKey()).append(":
+            // ").append(item.getValue()).append("</li>");
             // }
             // html.append("</ul></div>");
             // return html.toString();

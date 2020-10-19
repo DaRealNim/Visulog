@@ -4,8 +4,9 @@ build/*
 */build/*
 .classpath
 .project
+.vscode
 hamcrest-core-1.3.jar
 junit-4.13.jar
-.vscode/*
+
 
 /bin/
