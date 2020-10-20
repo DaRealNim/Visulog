@@ -1,0 +1,17 @@
+Backlog produit - projet Visulog - TEIXEIRA MEDEIROS Claudio
+
+Les objectifs principaux du produit final sont définis ici, chaque objectif a été décidé par un vote majoritaire de l'équipe.
+
+Ce backlog n'est pas définitif.
+
+--Créer notre webgen qui nous permet de faire des chartes avec CSS.
+
+--Plugins utiles permettant d'accéder à des informations concisement:
+	- commitsPerUser
+	- activityPerBranch
+	- commitFrequencyPerUser
+
+	Chaque plugin permettant d'avoir des informations devra être commpatible avec le webgen.
+
+--Option pour output les résultats du webgen sur un fichier
+	- "--output=data.html"
