@@ -1,8 +1,13 @@
 package up.visulog.config;
 
-import java.util.Map;
+import java.util.HashMap;
 
 // cette interface se comporte comme une Map de couple (clé , valeur).
-public interface PluginConfig extends Map<String, Object> {
+public class PluginConfig extends HashMap<String, Object> {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
 }

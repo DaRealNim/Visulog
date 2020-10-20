@@ -5,8 +5,11 @@ import up.visulog.config.Configuration;
 import up.visulog.config.PluginConfig;
 
 import java.nio.file.FileSystems;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class CLILauncher {
 
@@ -37,14 +40,15 @@ public class CLILauncher {
 
                             // Let's just trivially do this, before the TODO is fixed:
 
-                            if (pValue.equals("CountCommitsPerAuthorPlugin"))
-                                plugins.put("CountCommitsPerAuthorPlugin", new PluginConfig() {
+                            if (pValue.equals("countCommitsPerAuthorPlugin"))
+                                plugins.put("countCommitsPerAuthorPlugin", new PluginConfig() {
+
                                 });
-                            if (pValue.equals("DummyPlugin"))
-                                plugins.put("DummyPlugin", new PluginConfig() {
+                            if (pValue.equals("dummyPlugin"))
+                                plugins.put("dummyPlugin", new PluginConfig() {
                                 });
-                            if (pValue.equals("DummyPlugin2"))
-                                plugins.put("DummyPlugin2", new PluginConfig() {
+                            if (pValue.equals("dummyPlugin2"))
+                                plugins.put("dummyPlugin2", new PluginConfig() {
                                 });
 
                             break;

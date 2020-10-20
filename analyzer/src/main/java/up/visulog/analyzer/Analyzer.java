@@ -39,7 +39,8 @@ public class Analyzer {
     // TODO: find a way so that the list of plugins is not hardcoded in this factory
     private Optional<AnalyzerPlugin> makePlugin(String pluginName, PluginConfig pluginConfig) {
         try {
-            Class<?> classe = Class.forName("up.visulog.analyzer." + pluginName);
+            Class<?> classe = Class.forName(
+                    "up.visulog.analyzer." + (Character.toUpperCase(pluginName.charAt(0)) + pluginName.substring(1)));
             Constructor<?> constructor = classe.getConstructor(Configuration.class);
             Optional<Object> obj = Optional.of(constructor.newInstance(config));
             return Optional.of(AnalyzerPlugin.class.cast(obj.get()));
