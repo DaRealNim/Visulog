@@ -17,7 +17,9 @@ import java.io.IOException;
 
 public class CLILauncher {
 	public static void main(String[] args) {
+		
 		var config = makeConfigFromCommandLineArgs(args);
+
 		if (config.isPresent()) {
 			var analyzer = new Analyzer(config.get());
 			var results = analyzer.computeResults();
@@ -28,8 +30,10 @@ public class CLILauncher {
 	}
 
 	static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
+		
 		var gitPath = FileSystems.getDefault().getPath(".");
 		var plugins = new HashMap<String, PluginConfig>();
+		
 		for (var arg : args) {
 			if (arg.startsWith("--")) {
 				String[] parts = arg.split("=");
@@ -40,7 +44,7 @@ public class CLILauncher {
 					String pValue = parts[1];
 					switch (pName) {
 						case "--addPlugin":
-							plugins.put(pValue, new PluginConfig(){}); //Adds plugin passed.
+							plugins.put(pValue, new PluginConfig(){});
 							break;
 						case "--loadConfigFile":
 							try {
@@ -87,9 +91,13 @@ public class CLILauncher {
 		return Optional.of(new Configuration(gitPath, plugins));
 	}
 
+	//Hard coding command options seems to be the best solution, keep this list
+	//updated.
 	private static void displayHelpAndExit() {
-		System.out.println("Wrong command...");
-		//TODO: print the list of options and their syntax
+		System.out.println("Command not recognized, here's a list: \n");
+		System.out.println("--justSaveConfigFile=path/file.txt \n Saves options to path/file.txt\n");
+		System.out.println("--loadConfigFile=path/file.txt \n Loads options from path/file.txt\n");
+		System.out.println("--addPlugin=path/plugin \n Uses plugin");
 		System.exit(0);
 	}
 }
