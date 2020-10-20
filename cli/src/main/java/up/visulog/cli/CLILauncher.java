@@ -76,6 +76,7 @@ public class CLILauncher {
 									if (!(cfg.equals("--justSaveConfigFile=" + pValue))) //Does not write save option to file.
 										writer.write(cfg + "\n");
 								writer.close();
+								System.exit(0); //Exits before analysis
 							}
 							catch (IOException ex) {
 								System.out.println("Something went wrong.");
@@ -95,7 +96,7 @@ public class CLILauncher {
 	//updated.
 	private static void displayHelpAndExit() {
 		System.out.println("Command not recognized, here's a list: \n");
-		System.out.println("--justSaveConfigFile=path/file.txt \n Saves options to path/file.txt\n");
+		System.out.println("--justSaveConfigFile=path/file.txt \n Does no analysis and saves options to path/file.txt\n");
 		System.out.println("--loadConfigFile=path/file.txt \n Loads options from path/file.txt\n");
 		System.out.println("--addPlugin=path/plugin \n Uses plugin");
 		System.exit(0);
