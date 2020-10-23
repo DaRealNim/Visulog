@@ -55,15 +55,18 @@ public class Commit {
      * Returns an empty optional if there is nothing to parse anymore.
      */
     public static Optional<Commit> parseCommit(BufferedReader input) {
+    	int lineCount = 0;
         try {
 
             var line = input.readLine();
+            lineCount++; //keeps track of which line we're at ine the file for errors
             if (line == null) return Optional.empty(); // if no line can be read, we are done reading the buffer
             var idChunks = line.split(" ");
             if (!idChunks[0].equals("commit")) parseError();
             var builder = new CommitBuilder(idChunks[1]);
 
             line = input.readLine();
+            lineCount++;
             while (!line.isEmpty()) {
                 var colonPos = line.indexOf(":");
                 var fieldName = line.substring(0, colonPos);
@@ -79,9 +82,10 @@ public class Commit {
                         builder.setDate(fieldContent);
                         break;
                     default: // warns the user that some field was ignored
-                    	System.out.println(fieldName+" at line 0, pos"+colonPos+" was ignored; name invalid. should be Author/Merge/Date");
+                    	System.out.println(fieldName+" at line "+lineCount+" was ignored; name invalid. should be Author/Merge/Date");
                 }
                 line = input.readLine(); //prepare next iteration
+                lineCount++;
                 if (line == null) parseError(); // end of stream is not supposed to happen now (commit data incomplete)
             }
 
