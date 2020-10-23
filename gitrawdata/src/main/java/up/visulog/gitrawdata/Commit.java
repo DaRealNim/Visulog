@@ -31,7 +31,7 @@ public class Commit {
     // TODO: factor this out (similar code will have to be used for all git commands)
     public static List<Commit> parseLogFromCommand(Path gitPath) {
         ProcessBuilder builder =
-                new ProcessBuilder("git", "log").directory(gitPath.toFile());
+                new ProcessBuilder("git", "log", "--stat").directory(gitPath.toFile());
         Process process;
         try {
             process = builder.start();
@@ -128,6 +128,14 @@ public class Commit {
                     .map(String::trim) // remove indentation
                     .reduce("", (accumulator, currentLine) -> accumulator + currentLine); // concatenate everything
             builder.setDescription(description);
+            
+            if(builder.getMergedFrom()==null) { //if this is not a merge commit
+            	var statistiques = input
+            			.lines() //get a stream of lines to work with
+            			.takeWhile(currentLine -> !currentLine.isEmpty()) // take all lines until the first empty one (commits are separated by empty lines). Remark: commit messages are indented with spaces, so any blank line in the message contains at least a couple of spaces.
+            			.reduce("", (accumulator, currentLine) -> accumulator + currentLine); // concatenate everything
+            	builder.setStat(statistiques);
+            }
             return Optional.of(builder.createCommit());
         } catch (IOException e) {
             parseError();
@@ -144,7 +152,7 @@ public class Commit {
     public String toString() {
         return "Commit { " +
                 "id='" + id + '\'' +
-                (mergedFrom != null ? (", mergedFrom...='" + mergedFrom + '\'') : "") + //TODO: find out if this is the only optional field
+                (mergedFrom != null ? (", mergedFrom...='" + mergedFrom + '\'') : "") +
                 ", date='" + date + '\'' +
                 ", author='" + author + '\'' +
                 ", description='" + description + '\'' +

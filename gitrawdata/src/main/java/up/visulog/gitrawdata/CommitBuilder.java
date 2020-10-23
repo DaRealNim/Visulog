@@ -7,6 +7,8 @@ public class CommitBuilder {
     private String description;
     private String mergedFrom;
     private String stat;
+    
+    public String getMergedFrom() { return mergedFrom; }
 
     public CommitBuilder(String id) {
         this.id = id;
