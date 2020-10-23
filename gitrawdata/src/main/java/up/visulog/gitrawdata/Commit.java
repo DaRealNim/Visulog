@@ -17,7 +17,7 @@ public class Commit {
     public final String author;
     public final String description;
     public final String mergedFrom;
-    public final String stat;
+    public final String stat; // number of insertions and deletions for each commit
 
     public Commit(String id, String author, String date, String description, String mergedFrom, String stat) {
         this.id = id;
