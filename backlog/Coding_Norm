@@ -1,0 +1,98 @@
+Norme de code - Projet Visulog - TEIXEIRA Claudio
+ 
+ 
+Style d'indentation:
+ 
+    - Nom de la fonction collé aux parenthèses contenant les arguments
+    - Première accolade après le prototype de la fonction et un espace.
+    - Les indentations sont faites avec des tabulations par vote majoritaire.
+ 
+     Exemple:
+ 
+    void Fonction(int argument) {
+        code;
+    }
+ 
+Boucles, if, else:
+ 
+    - Les boucles et les if else suivent le même style d'indendation SAUF SI elles ne contiennent qu'une ligne.
+ 
+    Exemple: 
+         if (condition)
+            code;
+ 
+ 
+Styles de nom de variables et fonctions:
+ 
+    Les noms des variables sont à choisir, mais essayons d'avoir des noms qui ont un sens.
+ 
+    Les noms peuvent être aussi longs qu'on veut, mais le plus précis possibles.
+    Pour être on accord avec le reste du code, on les nomme en anglais.
+ 
+ 
+OUI:
+ 
+    printIntArray
+ 
+    addLinesToFile()
+ 
+    charArgumentsIndex (pour itérer sur un String d'un argument)
+ 
+    for (int arrayRowIndex = 0 ...
+ 
+    arrayColumnIndex
+ 
+ 
+NON:
+ 
+    printArray()
+    affiche()
+    ajoute()
+ 
+    des variables dont le nom est non informatif du style:
+ 
+    "i, count, j"
+ 
+    Pour que le code soit plus lisible et qu'on évite qu'elles soient réutilisées par deux personnes différentes.
+ 
+ 
+Commentaires:
+ 
+    Pas de commentaires trop longs ou verbose, ils se placent au dessus de ce qu'ils expliquent.
+ 
+OUI:
+ 
+    //Commentaire sur la fonction F
+    public int F(String str) {
+       code;
+    }
+ 
+NON:
+ 
+     public int F(String str) {
+     //Commentaire sur la Fonction F
+        code;
+     }
+ 
+     public int F(String str) {
+        code;
+     } //Commentaire sur la Fonction F
+ 
+Opérations mathématiques
+ 
+    Espaces entre variables et opérateurs, priorité indiquée avec parenthèse.
+ 
+OUI:
+ 
+    ((a + b * (b * c) / 2) / 4)
+NON:
+ 
+    ((a+b*(b*c)/2)/4)
+ 
+Dernièrement, un espace après chaque virgule, comme en écriture normale:
+ 
+Exemple:
+ 
+    includeSetupPage(testPage, newPageContent);
+    et non pas
+    includeSetupPage(testPage,newPageContent);
