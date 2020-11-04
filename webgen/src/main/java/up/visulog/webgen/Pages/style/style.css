@@ -9,27 +9,27 @@
 	display: inline-block;
 }
 
-.header a
+body, html
 {
-	margin-left: 20px;
-	text-decoration: none;
+	height: 100%;
 }
 
-a:hover
-{
-	text-decoration: text-light;
-}
-
-.col-4, .row, .card
+.col-4, .row
 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.card
+.bg
 {
-	margin: 2.5vh;
+	background-image: url("../img/background.jpg");
+
+	height: 100%;
+
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .fas
