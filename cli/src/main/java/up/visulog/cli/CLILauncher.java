@@ -5,8 +5,11 @@ import up.visulog.config.Configuration;
 import up.visulog.config.PluginConfig;
 
 import java.nio.file.FileSystems;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class CLILauncher {
 
@@ -16,7 +19,8 @@ public class CLILauncher {
             var analyzer = new Analyzer(config.get());
             var results = analyzer.computeResults();
             System.out.println(results.toHTML());
-        } else displayHelpAndExit();
+        } else
+            displayHelpAndExit();
     }
 
     static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
@@ -25,7 +29,8 @@ public class CLILauncher {
         for (var arg : args) {
             if (arg.startsWith("--")) {
                 String[] parts = arg.split("=");
-                if (parts.length != 2) return Optional.empty();
+                if (parts.length != 2)
+                    return Optional.empty();
                 else {
                     String pName = parts[0];
                     String pValue = parts[1];
@@ -35,12 +40,16 @@ public class CLILauncher {
 
                             // Let's just trivially do this, before the TODO is fixed:
 
-                            if (pValue.equals("countCommits")) plugins.put("countCommits", new PluginConfig() {
-                            });
-                            if (pValue.equals("dummyPlugin")) plugins.put("dummyPlugin", new PluginConfig() {
-                            });
-                            if (pValue.equals("dummyPlugin2")) plugins.put("dummyPlugin2", new PluginConfig() {
-                            });
+                            if (pValue.equals("countCommitsPerAuthorPlugin"))
+                                plugins.put("countCommitsPerAuthorPlugin", new PluginConfig() {
+
+                                });
+                            if (pValue.equals("dummyPlugin"))
+                                plugins.put("dummyPlugin", new PluginConfig() {
+                                });
+                            if (pValue.equals("dummyPlugin2"))
+                                plugins.put("dummyPlugin2", new PluginConfig() {
+                                });
 
                             break;
                         case "--loadConfigFile":
@@ -62,7 +71,7 @@ public class CLILauncher {
 
     private static void displayHelpAndExit() {
         System.out.println("Wrong command...");
-        //TODO: print the list of options and their syntax
+        // TODO: print the list of options and their syntax
         System.exit(0);
     }
 }

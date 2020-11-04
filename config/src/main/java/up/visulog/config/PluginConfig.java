@@ -1,5 +1,13 @@
 package up.visulog.config;
 
-// TODO: define what this type should be (probably a Map: settingKey -> settingValue)
-public interface PluginConfig {
+import java.util.HashMap;
+
+// cette interface se comporte comme une Map de couple (clé , valeur).
+public class PluginConfig extends HashMap<String, Object> {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
 }
