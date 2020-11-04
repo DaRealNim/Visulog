@@ -7,12 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CountCommitsPerAuthorPlugin implements AnalyzerPlugin {
-    private final Configuration configuration;
+public class CountCommitsPerAuthorPlugin extends Plugin {
     private Result result;
 
     public CountCommitsPerAuthorPlugin(Configuration generalConfiguration) {
-        this.configuration = generalConfiguration;
+        super(generalConfiguration);
     }
 
     static Result processLog(List<Commit> gitLog) {
@@ -31,7 +30,8 @@ public class CountCommitsPerAuthorPlugin implements AnalyzerPlugin {
 
     @Override
     public Result getResult() {
-        if (result == null) run();
+        if (result == null)
+            run();
         return result;
     }
 
