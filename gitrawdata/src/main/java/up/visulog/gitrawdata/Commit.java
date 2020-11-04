@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class Commit {
     // FIXME: (some of) these fields could have more specialized types than String
@@ -16,19 +17,21 @@ public class Commit {
     public final String author;
     public final String description;
     public final String mergedFrom;
+    public final String stat; // number of insertions and deletions for each commit
 
-    public Commit(String id, String author, String date, String description, String mergedFrom) {
+    public Commit(String id, String author, String date, String description, String mergedFrom, String stat) {
         this.id = id;
         this.author = author;
         this.date = date;
         this.description = description;
         this.mergedFrom = mergedFrom;
+        this.stat = stat;
     }
 
     // TODO: factor this out (similar code will have to be used for all git commands)
     public static List<Commit> parseLogFromCommand(Path gitPath) {
         ProcessBuilder builder =
-                new ProcessBuilder("git", "log").directory(gitPath.toFile());
+                new ProcessBuilder("git", "log", "--stat").directory(gitPath.toFile());
         Process process;
         try {
             process = builder.start();
@@ -41,6 +44,40 @@ public class Commit {
     }
 
     public static List<Commit> parseLog(BufferedReader reader) {
+        var result = new ArrayList<Commit>();
+        Optional<Commit> commit = parseCommit(reader);
+        while (commit.isPresent()) {
+            result.add(commit.get());
+            commit = parseCommit(reader);
+        }
+        return result;
+    }
+    
+    public static List<Commit> parseFromCommand(Path gitPath) {
+    	Scanner sc=new Scanner(System.in);
+    	ProcessBuilder builder;
+
+    	String com=" ";
+    	String opt=" ";
+    	com=sc.nextLine();
+    	opt=sc.nextLine();
+    	if(!(opt.equals(" "))) {
+    		builder =new ProcessBuilder("git", com,opt).directory(gitPath.toFile());
+    	}else {
+    		builder = new ProcessBuilder("git", com).directory(gitPath.toFile());
+    	}
+        Process process;
+        try {
+            process = builder.start();
+        } catch (IOException e) {
+            throw new RuntimeException("Error running \"git\".", e);
+        }
+        InputStream is = process.getInputStream();//read the process output 
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        return parse(reader);
+    }
+
+    public static List<Commit> parse(BufferedReader reader) { //prints the content of is
         var result = new ArrayList<Commit>();
         Optional<Commit> commit = parseCommit(reader);
         while (commit.isPresent()) {
@@ -96,6 +133,14 @@ public class Commit {
                     .map(String::trim) // remove indentation
                     .reduce("", (accumulator, currentLine) -> accumulator + currentLine); // concatenate everything
             builder.setDescription(description);
+            
+            if(builder.getMergedFrom()==null) { //if this is not a merge commit
+            	var statistiques = input
+            			.lines() //get a stream of lines to work with
+            			.takeWhile(currentLine -> !currentLine.isEmpty()) // take all lines until the first empty one (commits are separated by empty lines). Remark: commit messages are indented with spaces, so any blank line in the message contains at least a couple of spaces.
+            			.reduce("", (accumulator, currentLine) -> accumulator + currentLine); // concatenate everything
+            	builder.setStat(statistiques);
+            }
             return Optional.of(builder.createCommit());
         } catch (IOException e) {
             parseError();
@@ -110,12 +155,14 @@ public class Commit {
 
     @Override
     public String toString() {
-        return "Commit{" +
+        return "Commit { " +
                 "id='" + id + '\'' +
-                (mergedFrom != null ? ("mergedFrom...='" + mergedFrom + '\'') : "") + //TODO: find out if this is the only optional field
+                (mergedFrom != null ? (", mergedFrom...='" + mergedFrom + '\'') : "") +
                 ", date='" + date + '\'' +
                 ", author='" + author + '\'' +
                 ", description='" + description + '\'' +
+                (stat != null ? (", statistiques='" + stat + '\'') : "") +
                 '}';
     }
+
 }
