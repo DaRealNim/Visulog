@@ -13,7 +13,14 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 	//TODO 1(globale, renvoit le result de la méthode run): récupérer tous les commits dans une List<Commit>,
 	        //puis parcourir la List<Commit> pour appeler d'autres méthodes aux(calcul période) pour chaque auteur
 	
-	//TODO 2: calcul de la moyenne de toutes les périodes pour chaque personne
+	//return average time between each commit
+	public double timeAverage(int[] time) {
+		double average = 0;
+		for(int i=0; i<time.length; i++) {
+			average += time[i];
+		}
+		return average/time.length;
+	}
 	
 	//TODO 3: renvoit tableau de toutes les périodes par personne(pour permettre le todo 2)
 	
@@ -28,4 +35,5 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 	public Result getResult() {
 		return null;
 	}
+
 }
