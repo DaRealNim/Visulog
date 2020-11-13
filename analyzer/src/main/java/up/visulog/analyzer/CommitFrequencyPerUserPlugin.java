@@ -1,6 +1,7 @@
 package up.visulog.analyzer;
 
 import up.visulog.config.Configuration;
+import up.visulog.gitrawdata.Commit;
 
 public class CommitFrequencyPerUserPlugin extends Plugin {
 
@@ -14,7 +15,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 	        //puis parcourir la List<Commit> pour appeler d'autres méthodes aux(calcul période) pour chaque auteur
 	
 	//return average time between each commit
-	public double timeAverage(int[] time) {
+	public double timeAverage(double[] time) {
 		double average = 0;
 		for(int i=0; i<time.length; i++) {
 			average += time[i];
@@ -25,6 +26,10 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 	//TODO 3: renvoit tableau de toutes les périodes par personne(pour permettre le todo 2)
 	
 	//TODO 4: calcul de la période entre deux commits(en jour)
+	public double timeBetweenTwoCommits(Commit a, Commit b) {
+		double time = 0;
+		return time;
+	}
 	
 	@Override
 	public void run() {
