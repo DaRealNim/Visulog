@@ -9,31 +9,26 @@ import up.visulog.gitrawdata.Commit;
 public class CommitFrequencyPerUserPlugin extends Plugin {
 
 	private Result result;
-	
+
 	public CommitFrequencyPerUserPlugin(Configuration generalConfiguration) {
 		super(generalConfiguration);
 	}
-	
+
 	//TODO 1(globale, renvoit le result de la méthode run): récupérer tous les commits dans une List<Commit>,
-	        //puis parcourir la List<Commit> pour appeler d'autres méthodes aux(calcul période) pour chaque auteur
-	public void FrequencyPerUser(List<Commit> gitLog) {
+	//puis parcourir la List<Commit> pour appeler d'autres méthodes aux(calcul période) pour chaque auteur
+	public Result frequencyPerUser(List<Commit> gitLog) {
+		List<String> authorsDone=new ArrayList<String>();
 		for(Commit i : gitLog) {
-			List<String> authorsDone=new ArrayList<String>();
-			for(String s : authorsDone) {
-				if(s.isEmpty()) {
-					List<Commit> authorCommits=new ArrayList<Commit>();
-					authorCommits=getCommitForThisAuthor(gitLog,i.author);
-					authorsDone.add(i.author);
-					
-				}else {
-				if(!(s.equals(i.author))){
-					
-				}
-			}
+			if(authorsDone.isEmpty() || !authorsDone.contains(i.author)) {
+				List<Commit> authorCommits=new ArrayList<Commit>();
+				authorCommits=getCommitForThisAuthor(gitLog,i.author);
+				authorsDone.add(i.author);
+				timeAverage(tabTimeAverage(authorCommits)); // à stocker dans result;
 			}
 		}
+		return result;
 	}
-	
+
 	//get in a list all the author's commits
 	public List<Commit> getCommitForThisAuthor(List<Commit> gitLog, String name) {
 		List<Commit> authorCommits=new ArrayList<Commit>();
@@ -42,23 +37,37 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		}
 		return authorCommits;
 	}
-	
+
 	//return average time between each commit
-	public double timeAverage(int[] time) {
+	public double timeAverage(double[] time) {
 		double average = 0;
 		for(int i=0; i<time.length; i++) {
 			average += time[i];
 		}
 		return average/time.length;
 	}
-	
-	//TODO 3: renvoit tableau de toutes les périodes par personne(pour permettre le todo 2)
-	public double[] tabTimeAverage() { // final name will maybe be different
-		double[] tab=new
+
+	//return a double[] of frequency between two commits to help timeAverage
+	public double[] tabTimeAverage(List<Commit> authorCommits) {// final name will maybe be different
+		double[] tab;
+		int size=authorCommits.size();
+		if(authorCommits.size()==1) {
+			tab=new double[1];
+			tab[0]=0;
+		}
+		tab=new double[];
+		int index=0;
+		for(int i=0;i<authorCommits.size();i++) {
+			if(authorCommits.get(i)!=authorCommits.get(authorCommits.size()-1)) {
+			tab[index]=FrequencyPerTwoCommits(authorCommits.get(i),authorCommits.get(i+1));
+			index++;
+		}
+		}
+		return tab;
 	}
-	
+
 	//TODO 4: calcul de la période entre deux commits(en jour)
-	
+
 	@Override
 	public void run() {
 		//result = TODO 1
