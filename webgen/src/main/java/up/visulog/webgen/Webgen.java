@@ -1,4 +1,4 @@
-// package up.visulog.webgen;
+package up.visulog.webgen;
 
 import java.awt.Color;
 
