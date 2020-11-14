@@ -50,7 +50,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		for(int i=0; i<time.length; i++) {
 			average += time[i];
 		}
-		return average/time.length;
+		return ((double) average/time.length);
 	}
 
 	//return a double[] of each time between two commits, this double[] will be use for timeAverage
