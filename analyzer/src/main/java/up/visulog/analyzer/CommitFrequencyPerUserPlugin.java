@@ -1,7 +1,9 @@
 package up.visulog.analyzer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
@@ -24,7 +26,9 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 				//create List<Commit> for this author
 				List<Commit> authorCommits = getCommitForThisAuthor(gitLog,i.author);
 				authorsDone.add(i.author);
-				timeAverage(tabTimeAverage(authorCommits)); // à stocker dans result;
+				
+				//stock in result time average for each author
+				result.frequencyPerUser.put(i.author, timeAverage(tabTime(authorCommits)));
 			}
 		}
 		return result;
@@ -36,6 +40,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		for(Commit i : gitLog) {
 			if(i.author.equals(name)) authorCommits.add(i);
 		}
+        result.totalCommitsPerUser.put(name, authorCommits.size()); 
 		return authorCommits;
 	}
 
@@ -48,23 +53,24 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		return average/time.length;
 	}
 
-	//return a double[] of frequency between two commits to help timeAverage
-	public double[] tabTimeAverage(List<Commit> authorCommits) {// final name will maybe be different
-		double[] tab;
-		int size=authorCommits.size();
+	//return a double[] of each time between two commits, this double[] will be use for timeAverage
+	public double[] tabTime(List<Commit> authorCommits) {
+		double[] tabTime;
 		if(authorCommits.size()==1) {
-			tab = new double[1];
-			tab[0] = 0;
+			//this author has only one commit
+			tabTime = new double[1];
+			tabTime[0] = 0; //per default if only one commit
+		} else {
+			tabTime = new double[authorCommits.size()];
+			int index = 0;
+			for(int i=0; i < authorCommits.size(); i++) {
+				if(authorCommits.get(i)!=authorCommits.get(authorCommits.size()-1)) {
+					tabTime[index] = timeBetweenTwoCommits(authorCommits.get(i),authorCommits.get(i+1));
+					index++;
+				}
+			}
 		}
-		tab = new double[authorCommits.size()/2];
-		int index = 0;
-		for(int i=0; i<authorCommits.size(); i++) {
-			if(authorCommits.get(i)!=authorCommits.get(authorCommits.size()-1)) {
-			tab[index] = timeBetweenTwoCommits(authorCommits.get(i),authorCommits.get(i+1));
-			index++;
-		}
-		}
-		return tab;
+		return tabTime;
 	}
 
 	//TODO 4: calcul de la période entre deux commits(en jour)
@@ -84,7 +90,10 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 	}
 	
 	static class Result implements AnalyzerPlugin.Result {
-
+		
+		private final Map<String, Double> frequencyPerUser = new HashMap();
+		private final Map<String, Integer> totalCommitsPerUser = new HashMap();
+		
 		@Override
 		public String getResultAsString() {
 			// TODO Auto-generated method stub
