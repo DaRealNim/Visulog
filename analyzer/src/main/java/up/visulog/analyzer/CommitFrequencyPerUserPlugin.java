@@ -81,12 +81,14 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 	
 	@Override
 	public void run() {
-		//result = TODO 1
+		result = frequencyPerUser(Commit.parseLogFromCommand(configuration.getGitPath()));
 	}
 
 	@Override
 	public Result getResult() {
-		return null;
+		if (result == null)
+            run();
+        return result;
 	}
 	
 	static class Result implements AnalyzerPlugin.Result {
