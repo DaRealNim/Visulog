@@ -31,7 +31,7 @@ public class Commit {
     // TODO: factor this out (similar code will have to be used for all git commands)
     public static List<Commit> parseLogFromCommand(Path gitPath) {
         ProcessBuilder builder =
-                new ProcessBuilder("git", "log", "--stat").directory(gitPath.toFile());
+                new ProcessBuilder("git", "log", "--shortstat").directory(gitPath.toFile());
         Process process;
         try {
             process = builder.start();

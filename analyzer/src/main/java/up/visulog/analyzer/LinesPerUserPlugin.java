@@ -27,8 +27,9 @@ public class LinesPerUserPlugin extends Plugin{
 				authorsList.add(i.author);
 				
 				//stock in result
-				var nb = result.linesAdded.getOrDefault(i.author, 0);
-	            result.linesAdded.put(i.author, nb + getLinesAdded(i));
+				System.out.println(i.author);
+	            result.linesAdded.put(i.author, getLinesAdded(authorCommits));
+	            result.linesDeleted.put(i.author, getLinesDeleted(authorCommits));
 				
 			}
 
@@ -45,21 +46,50 @@ public class LinesPerUserPlugin extends Plugin{
 		return authorCommits;
 	}
 	
-	//return number of lines added in Commit commit
-	public int getLinesAdded(Commit commit) {
-		return 0;
+	//return number of lines added in authorCommits(all commits of one author)
+	public int getLinesAdded(List<Commit> authorCommits) {
+		int added = 0;
+		String s = "changed, ";
+		for(Commit commit : authorCommits) {
+			if(commit.stat != null) {
+				String statistics = commit.stat;
+				int posStart = statistics.indexOf(s);
+				int posEnd = statistics.indexOf("insertions(+)");
+				if(posEnd == -1) posEnd = statistics.indexOf("insertion(+)"); //insertion without s if just one line added
+				if(posStart != -1 && posEnd != -1) {
+					added += Integer.valueOf(statistics.substring((posStart+s.length()),(posEnd-1)));
+				}
+			}
+		}
+		return added;
 	}
 	
-	//return number of lines deleted in Commit commit
-		public int getLinesDeleted(Commit commit) {
-			return 0;
+	//return number of lines deleted in authorCommits(all commits of one author)
+	public int getLinesDeleted(List<Commit> authorCommits) {
+		int deleted = 0;
+		for(Commit commit : authorCommits) {
+			if(commit.stat != null) {
+				String s = "(+), "; //if there are insertions
+				String statistics = commit.stat;
+				int posStart = statistics.indexOf(s); 
+				if(posStart == -1) { //there is no insertions, only deletions
+					s = "changed, ";
+					posStart = statistics.indexOf(s); //if there are insertion before
+				}
+				int posEnd = statistics.indexOf("deletions(-)");
+				if(posEnd == -1) posEnd = statistics.indexOf("deletion(-)"); //deletion without s if juste one line deleted
+				if(posStart != -1 && posEnd != -1) {
+					deleted += Integer.valueOf(statistics.substring((posStart+s.length()),(posEnd-1)));
+				}
+			}
 		}
+		return deleted;
+	}
 
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		result = linesPerUser(Commit.parseLogFromCommand(configuration.getGitPath()));
 	}
 
 	@Override
@@ -81,8 +111,12 @@ public class LinesPerUserPlugin extends Plugin{
 
 		@Override
 		public String getResultAsHtmlDiv() {
-			// TODO Auto-generated method stub
-			return null;
+			StringBuilder html = new StringBuilder("<div>Number of lines added/deleted per author: <ul>");
+            for (var item : linesDeleted.entrySet()) {
+                html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
+            }
+            html.append("</ul></div>");
+            return html.toString();
 		}
 		
 	}
