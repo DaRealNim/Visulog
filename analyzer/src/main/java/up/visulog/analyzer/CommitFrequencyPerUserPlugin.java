@@ -16,8 +16,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		super(generalConfiguration);
 	}
 
-	//TODO 1(globale, renvoit le result de la méthode run): récupérer tous les commits dans une List<Commit>,
-	//puis parcourir la List<Commit> pour appeler d'autres méthodes aux(calcul période) pour chaque auteur
+	//return the final result to run() with every users' frequency 
 	public Result frequencyPerUser(List<Commit> gitLog) {
 		var result = new Result();
 		List<String> authorsDone = new ArrayList<String>(); //list of authors who has commits
@@ -61,7 +60,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 			tabTime = new double[1];
 			tabTime[0] = 0; //per default if only one commit
 		} else {
-			tabTime = new double[authorCommits.size()];
+			tabTime = new double[authorCommits.size()-1];
 			int index = 0;
 			for(int i=0; i < authorCommits.size(); i++) {
 				if(authorCommits.get(i)!=authorCommits.get(authorCommits.size()-1)) {
@@ -98,8 +97,17 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		
 		@Override
 		public String getResultAsString() {
-			// TODO Auto-generated method stub
-			return null;
+			String s="";
+			for(HashMap.Entry<String,Double> d : frequencyPerUser.entrySet()) {
+				s+=d.getKey()+" : "+d.getValue()+" (sur ";
+				for(HashMap.Entry<String,Integer> i : totalCommitsPerUser.entrySet()) {
+				if(i.getKey().equals(d.getKey())) {
+					s+=i.getValue()+" commits) \n";
+				}
+				}
+			}
+			s+="\n";
+			return s;
 		}
 
 		@Override
