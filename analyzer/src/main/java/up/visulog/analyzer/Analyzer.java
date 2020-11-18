@@ -36,7 +36,6 @@ public class Analyzer {
         return new AnalyzerResult(plugins.stream().map(AnalyzerPlugin::getResult).collect(Collectors.toList()));
     }
 
-    // TODO: find a way so that the list of plugins is not hardcoded in this factory
     private Optional<AnalyzerPlugin> makePlugin(String pluginName, PluginConfig pluginConfig) {
         try {
             Class<?> classe = Class.forName(

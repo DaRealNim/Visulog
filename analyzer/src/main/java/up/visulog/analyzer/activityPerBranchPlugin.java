@@ -1,44 +1,51 @@
 package up.visulog.analyzer;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import up.visulog.config.Configuration;
+import up.visulog.gitrawdata.BranchCommits;
 
-import java.util.concurrent.TimeUnit;
-
-public class activityPerBranchPlugin extends Plugin {
+public class ActivityPerBranchPlugin extends Plugin {
     private Result result;
 
-    public activityPerBranchPlugin(Configuration generalConfiguration) {
+    public ActivityPerBranchPlugin(Configuration generalConfiguration) {
         super(generalConfiguration);
     }
 
     @Override
     public void run() {
-        
+        List<BranchCommits> list = BranchCommits.countCommitsPerBranch(configuration.getGitPath());
     }
 
     @Override
     public Result getResult() {
-        
+        if (result == null)
+            run();
         return result;
     }
 
     static class Result implements AnalyzerPlugin.Result {
+        private final Map<String, Integer> nbCommitsPerBranch = new HashMap<>();
+
+        public Map<String, Integer> getNbCommitsPerBranch() {
+            return nbCommitsPerBranch;
+        }
+
         @Override
         public String getResultAsString() {
-            return "";
+            return nbCommitsPerBranch.toString();
         }
 
         @Override
         public String getResultAsHtmlDiv() {
-            // StringBuilder html = new StringBuilder("<div>Commits per author: <ul>");
-            // for (var item : commitsPerAuthor.entrySet()) {
-            // html.append("<li>").append(item.getKey()).append(":
-            // ").append(item.getValue()).append("</li>");
-            // }
-            // html.append("</ul></div>");
-            // return html.toString();
-
-            return "<div>insérer une phrase de skyrim</div>";
+            StringBuilder html = new StringBuilder("<div>Number of Commits per branch: <ul>");
+            for (var item : nbCommitsPerBranch.entrySet()) {
+                html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
+            }
+            html.append("</ul></div>");
+            return html.toString();
         }
     }
 }
