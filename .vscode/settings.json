@@ -3,6 +3,8 @@
         "lib/**/*.jar",
         "/home/chems/Documents/code/conduite  de projet/**/*.jar",
         "f:\\NOUREDINE\\ETUDES\\COURSetFORMATIONS\\Etudes\\L2 INFORMATIQUE DIDEROT\\CONDUITE DE PROJET\\TP\\TP-1-\\hamcrest-core-1.3.jar",
-        "f:\\NOUREDINE\\ETUDES\\COURSetFORMATIONS\\Etudes\\L2 INFORMATIQUE DIDEROT\\CONDUITE DE PROJET\\TP\\TP-1-\\junit-4.13.jar"
+        "f:\\NOUREDINE\\ETUDES\\COURSetFORMATIONS\\Etudes\\L2 INFORMATIQUE DIDEROT\\CONDUITE DE PROJET\\TP\\TP-1-\\junit-4.13.jar",
+        "c:\\Users\\chemo\\Documents\\code\\junit\\junit.jar",
+        "c:\\Users\\chemo\\Documents\\code\\junit\\hamcrest.jar"
     ]
 }
