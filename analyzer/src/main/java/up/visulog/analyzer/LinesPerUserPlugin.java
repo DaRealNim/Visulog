@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import up.visulog.analyzer.CountCommitsPerAuthorPlugin.Result;
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
 
@@ -27,9 +26,8 @@ public class LinesPerUserPlugin extends Plugin{
 				authorsList.add(i.author);
 				
 				//stock in result
-				System.out.println(i.author);
-	            result.linesAdded.put(i.author, getLinesAdded(authorCommits));
-	            result.linesDeleted.put(i.author, getLinesDeleted(authorCommits));
+				String lines = getLinesAdded(authorCommits)+" / "+getLinesDeleted(authorCommits);
+				result.linesAddedDeleted.put(i.author,lines);
 				
 			}
 
@@ -100,19 +98,17 @@ public class LinesPerUserPlugin extends Plugin{
     }
 	
 	static class Result implements AnalyzerPlugin.Result{
-		private final Map<String, Integer> linesAdded = new HashMap();
-		private final Map<String, Integer> linesDeleted = new HashMap();
+		private final Map<String, String> linesAddedDeleted = new HashMap();
 
 		@Override
 		public String getResultAsString() {
-			// TODO Auto-generated method stub
-			return null;
+			return linesAddedDeleted.toString();
 		}
 
 		@Override
 		public String getResultAsHtmlDiv() {
 			StringBuilder html = new StringBuilder("<div>Number of lines added/deleted per author: <ul>");
-            for (var item : linesDeleted.entrySet()) {
+            for (var item : linesAddedDeleted.entrySet()) {
                 html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
             }
             html.append("</ul></div>");
