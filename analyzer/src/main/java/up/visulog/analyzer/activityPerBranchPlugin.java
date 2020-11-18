@@ -14,9 +14,17 @@ public class ActivityPerBranchPlugin extends Plugin {
         super(generalConfiguration);
     }
 
+    private Result parseNbCommitsPerBranchToResult(List<BranchCommits> branchCommits) {
+        result = new Result();
+        for (BranchCommits branchCommit : branchCommits) {
+            result.nbCommitsPerBranch.put(branchCommit.getNomDeLaBranche(), branchCommit.getNbCommits());
+        }
+        return result;
+    }
+
     @Override
     public void run() {
-        List<BranchCommits> list = BranchCommits.countCommitsPerBranch(configuration.getGitPath());
+        result = parseNbCommitsPerBranchToResult(BranchCommits.countCommitsPerBranch(configuration.getGitPath()));
     }
 
     @Override
@@ -40,6 +48,7 @@ public class ActivityPerBranchPlugin extends Plugin {
 
         @Override
         public String getResultAsHtmlDiv() {
+            System.out.println("dshfqudsgqdsifgqks : "+nbCommitsPerBranch.size());
             StringBuilder html = new StringBuilder("<div>Number of Commits per branch: <ul>");
             for (var item : nbCommitsPerBranch.entrySet()) {
                 html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");

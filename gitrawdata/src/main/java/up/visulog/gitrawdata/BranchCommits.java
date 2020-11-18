@@ -19,9 +19,24 @@ public class BranchCommits {
 
     public static List<BranchCommits> countCommitsPerBranch(Path gitPath) {
         List<String> branches = getAllLocalBranches(gitPath);
-        List<BranchCommits> results = new ArrayList<>();
-        results.add(new BranchCommits("test", 2));
-        return results;
+        ProcessBuilder getNbCommits;
+        Process process;
+        InputStream is;
+        BufferedReader reader;
+        List<BranchCommits> result = new ArrayList<>();
+        for (String branche : branches) {
+            try {
+                getNbCommits = new ProcessBuilder("git", "rev-list", "--count", branche);
+                process = getNbCommits.start();
+                is = process.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(is));
+                result.add(new BranchCommits(branche, parseNbCommits(reader)));
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     private static List<String> getAllLocalBranches(Path gitPath) { /// permet de récuperer toutes les branches locales
@@ -50,5 +65,26 @@ public class BranchCommits {
             e.printStackTrace();
         }
         return branches;
+    }
+
+    private static int parseNbCommits(BufferedReader reader) {
+        try {
+            return Integer.valueOf(reader.readLine());
+        } catch (NumberFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int getNbCommits() {
+        return nbCommits;
+    }
+
+    public String getNomDeLaBranche() {
+        return nomDeLaBranche;
     }
 }
