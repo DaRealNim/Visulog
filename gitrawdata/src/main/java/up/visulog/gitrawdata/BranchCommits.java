@@ -56,14 +56,12 @@ public class BranchCommits {
 
     private static List<String> parseBranch(BufferedReader reader) {
         List<String> branches = new ArrayList<>();
-        try {
-            while (reader.ready()) {
-                branches.add(reader.readLine());
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        reader.lines().forEach((s) -> {
+            if (s.trim().contains("*"))
+                branches.add(s.substring(2).trim());
+            else
+                branches.add(s.trim());
+        });
         return branches;
     }
 
