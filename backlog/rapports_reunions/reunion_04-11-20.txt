@@ -1,0 +1,16 @@
+Compte rendu de la réunion du 4 novembre 2020
+
+Les TODO et les FIXME assignés en début de projet se terminent tranquillement.
+Toutes les merge requests ont été vérifiées et acceptées.
+Le product backlog étant maintenant défini et les objectifs identifiés, il
+est temps de commencer à se répartir les tâches. Deux objectifs principaux:
+développer un webgen pour l'aspect graphique des rapports d'analyse, et
+implémenter de nouvelles fonctionnalités par de nouveaux plugins.
+
+Répartition des tâches:
+Benjamin, Claudio et Youri: Travaillent sur le webgen
+Nouredine, Alassane et Chems Eddine: Travaillent sur activityPerBranch
+Cassandra et Jacqueline: Travaillent sur commitFrequencyPerUser
+
+Une branche va être créée par fonctionnalité.
+
