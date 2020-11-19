@@ -48,7 +48,7 @@ public class ActivityPerBranchPlugin extends Plugin {
 
         @Override
         public String getResultAsHtmlDiv() {
-            System.out.println("dshfqudsgqdsifgqks : "+nbCommitsPerBranch.size());
+            System.out.println("dshfqudsgqdsifgqks : " + nbCommitsPerBranch.size());
             StringBuilder html = new StringBuilder("<div>Number of Commits per branch: <ul>");
             for (var item : nbCommitsPerBranch.entrySet()) {
                 html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
