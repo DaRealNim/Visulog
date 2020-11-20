@@ -27,7 +27,6 @@ public class Commit {
         this.stat = stat;
     }
 
-    // TODO: factor this out (similar code will have to be used for all git commands)
     public static List<Commit> parseLogFromCommand(Path gitPath) {
         ProcessBuilder builder =
                 new ProcessBuilder("git", "log", "--stat").directory(gitPath.toFile());
@@ -52,16 +51,10 @@ public class Commit {
         return result;
     }
     
-    public static InputStream parseFromCommand(Path gitPath,String command, String option) {
+    public static BufferedReader parseFromCommand(Path gitPath,String command, String option) {
     	ProcessBuilder builder;
     	if(option!=null) {
-    		if(command.equals("log")) {
-        		builder =new ProcessBuilder("git", command,option,"--stat").directory(gitPath.toFile());
-    		}else {
     		builder =new ProcessBuilder("git", command,option).directory(gitPath.toFile());
-    		}
-    	}else if(command.equals("log")){
-    		builder = new ProcessBuilder("git", command,"--stat").directory(gitPath.toFile());
     	}else {
     		builder = new ProcessBuilder("git", command).directory(gitPath.toFile());
     	}
@@ -73,8 +66,7 @@ public class Commit {
         }
         InputStream is = process.getInputStream();//read the process output 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        //return parseLog(reader);
-        return is;
+        return reader;
     }
     
 

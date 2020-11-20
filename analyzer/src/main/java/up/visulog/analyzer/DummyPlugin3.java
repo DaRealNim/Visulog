@@ -2,8 +2,6 @@ package up.visulog.analyzer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,26 +11,25 @@ import up.visulog.gitrawdata.Commit;
 public class DummyPlugin3 extends Plugin {
 	private Result result;
 
-	DummyPlugin3(Configuration configuration) {
-		super(configuration);
+	public DummyPlugin3(Configuration generalConfiguration) {
+		super(generalConfiguration);
 	}
 
-	public Result getString(InputStream i) throws IOException {
-		String s;
+	public Result getString(BufferedReader r) throws IOException {
 		List<String> l=new ArrayList<String>();
-        BufferedReader r = new BufferedReader(new InputStreamReader(i));
-		while((s=r.readLine())!=null) {
-			l.add(s);
+		String line;
+		var res=new Result();
+		while((line=r.readLine())!=null) {
+		l.add(line);	
 		}
-		Result res=new Result();
 		res.inputStream=l;
 		return res;
+		
 	}
 	
 	public void run() {
 		try {
-			result=getString(Commit.parseFromCommand(configuration.getGitPath(),"log", null));
-			System.out.print("ça fonctionn");
+			result=getString(Commit.parseFromCommand(configuration.getGitPath(),"log", "--stat"));
 		} catch (IOException e) {
 		System.out.println("erreur");
 		}
@@ -56,10 +53,10 @@ static class Result implements AnalyzerPlugin.Result {
 		
 		public String getResultAsHtmlDiv() {
 			   StringBuilder html = new StringBuilder("<div>commande result: <ul>");
-	            for (String s : inputStream) {
-	                html.append("<li>").append(s).append("</li>");
-	            }
-	            html.append("</ul></div>");
+			  for(String s : inputStream) {
+				   html.append("<div>").append(s).append("<div>");
+			   }
+			   html.append("</ul></div>");
 	            return html.toString();
 	            }
 	}
