@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class Commit {
     // FIXME: (some of) these fields could have more specialized types than String
@@ -28,7 +27,6 @@ public class Commit {
         this.stat = stat;
     }
 
-    // TODO: factor this out (similar code will have to be used for all git commands)
     public static List<Commit> parseLogFromCommand(Path gitPath) {
         ProcessBuilder builder =
                 new ProcessBuilder("git", "log", "--stat").directory(gitPath.toFile());
@@ -53,18 +51,12 @@ public class Commit {
         return result;
     }
     
-    public static List<Commit> parseFromCommand(Path gitPath) {
-    	Scanner sc=new Scanner(System.in);
+    public static BufferedReader parseFromCommand(Path gitPath,String command, String option) {
     	ProcessBuilder builder;
-
-    	String com=" ";
-    	String opt=" ";
-    	com=sc.nextLine();
-    	opt=sc.nextLine();
-    	if(!(opt.equals(" "))) {
-    		builder =new ProcessBuilder("git", com,opt).directory(gitPath.toFile());
+    	if(option!=null) {
+    		builder =new ProcessBuilder("git", command,option).directory(gitPath.toFile());
     	}else {
-    		builder = new ProcessBuilder("git", com).directory(gitPath.toFile());
+    		builder = new ProcessBuilder("git", command).directory(gitPath.toFile());
     	}
         Process process;
         try {
@@ -74,18 +66,9 @@ public class Commit {
         }
         InputStream is = process.getInputStream();//read the process output 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        return parse(reader);
+        return reader;
     }
-
-    public static List<Commit> parse(BufferedReader reader) { //prints the content of is
-        var result = new ArrayList<Commit>();
-        Optional<Commit> commit = parseCommit(reader);
-        while (commit.isPresent()) {
-            result.add(commit.get());
-            commit = parseCommit(reader);
-        }
-        return result;
-    }
+    
 
     /**
      * Parses a log item and outputs a commit object. Exceptions will be thrown in case the input does not have the proper format.
