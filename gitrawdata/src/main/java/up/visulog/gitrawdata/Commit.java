@@ -12,7 +12,9 @@ import java.util.Optional;
 public class Commit {
     // FIXME: (some of) these fields could have more specialized types than String
     public final String id;
+    // Id pourrait passer en double
     public final String date;
+    //La date es sensée etre un tableau d'entier de taille 8, mais l'initialiser mtn fais qu'on peut plus le modifier. A faire sur l'analyser
     public final String author;
     public final String description;
     public final String mergedFrom;
