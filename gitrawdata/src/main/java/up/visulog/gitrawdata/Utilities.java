@@ -1,4 +1,4 @@
-public class Utilitaries{
+public class Utilities{
 
   public static double hexToDouble(String s){
     String current = s;
