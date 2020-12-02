@@ -2,10 +2,13 @@ package up.visulog.analyzer;
 
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
+import up.visulog.webgen.Webgen;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+
 
 public class CountCommitsPerAuthorPlugin extends Plugin {
     private Result result;
@@ -35,6 +38,8 @@ public class CountCommitsPerAuthorPlugin extends Plugin {
         return result;
     }
 
+
+
     static class Result implements AnalyzerPlugin.Result {
         private final Map<String, Integer> commitsPerAuthor = new HashMap<>();
 
@@ -55,6 +60,21 @@ public class CountCommitsPerAuthorPlugin extends Plugin {
             }
             html.append("</ul></div>");
             return html.toString();
+        }
+
+        public Webgen.Graph[] getResultAsGraphArray() {
+            ArrayList<String> labels = new ArrayList<String>();
+            ArrayList<int> data = new ArrayList<Integer>();
+            for (var item : commitsPerAuthor.entrySet()) {
+                labels.add(item.getKey());
+                data.add(Integer.valueOf(item.getValue()));
+            }
+            return new Webgen.Graph[]{new Webgen.BarGraph("Commits per author", labels.toArray(new String[0]), data.toArray(new int[0]), null)};
+        }
+
+        @Override
+        public String getDisplayName() {
+            return "Commits per author";
         }
     }
 }

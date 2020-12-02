@@ -1,10 +1,15 @@
 package up.visulog.analyzer;
+import up.visulog.webgen.Webgen;
 
 public interface AnalyzerPlugin {
     interface Result {
         String getResultAsString();
 
         String getResultAsHtmlDiv();
+
+        Webgen.Graph[] getResultAsGraphArray();
+
+        String getDisplayName();
     }
 
     /**
