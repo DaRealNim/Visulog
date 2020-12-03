@@ -2,11 +2,25 @@ package up.visulog.webgen;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Webgen {
 
-    public class Graph {
-        private String html_code;
+    public static Color generateRandomColor() {
+        Random r = new Random();
+        return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
+    }
+
+    public static Color[] generateRandomColorArray(int size) {
+        Color[] ret = new Color[size];
+        for(int i=0; i<size; i++) {
+            ret[i] = generateRandomColor();
+        }
+        return ret;
+    }
+
+    public static class Graph {
+        protected String html_code;
 
         public String getHTML() {
             return html_code;
@@ -15,16 +29,16 @@ public class Webgen {
 
     public static final Color DEFAULT_COLOR = new Color(128,128,128);
 
-    public class BarGraph extends Graph {
+    public static class BarGraph extends Graph {
         public BarGraph(String name, String[] labels, int[] data, Color[] colors) {
             if(colors == null) {
                 colors = new Color[labels.length];
-                colors = Arrays.fill(colors, DEFAULT_COLOR);
+                Arrays.fill(colors, DEFAULT_COLOR);
             }
             html_code = generateBarGraph(name, labels, data, colors);
         }
-        private static String generateBarGraph(String name, String[] labels, int[] data, Color[] colors) {
-            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "'></canvas>";
+        private String generateBarGraph(String name, String[] labels, int[] data, Color[] colors) {
+            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "' width=\"770\" height=\"385\" style=\"display: block; width: 770px; height: 385px;\"></canvas>";
             returnedHTMLCode += "<script>var ctx = document.getElementById('" + name.replace("'", "\\'") + "').getContext('2d');";
             returnedHTMLCode += "var myChart = new Chart(ctx, { type: 'bar', data: { labels: [";
             for(String label : labels) {
@@ -47,14 +61,14 @@ public class Webgen {
         }
     }
 
-    public class LineGraph extends Graph {
+    public static class LineGraph extends Graph {
         public LineGraph(String name, String[] labels, int[] data, Color color) {
             if(color == null) {
-                colors = DEFAULT_COLOR;
+                color = DEFAULT_COLOR;
             }
             html_code = generateLineGraph(name, labels, data, color);
         }
-        private static String generateLineGraph(String name, String[] labels, int[] data, Color color) {
+        private String generateLineGraph(String name, String[] labels, int[] data, Color color) {
             String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "'></canvas>";
             returnedHTMLCode += "<script>var ctx = document.getElementById('" + name.replace("'", "\\'") + "').getContext('2d');";
             returnedHTMLCode += "var myChart = new Chart(ctx, { type: 'line', data: { labels: [";
@@ -71,17 +85,17 @@ public class Webgen {
         }
     }
 
-    public class CircularGraph extends Graph {
+    public static class CircularGraph extends Graph {
         public CircularGraph(String name, String[] labels, int[] data, Color[] colors, boolean isDoughnut) {
             if(colors == null) {
                 colors = new Color[labels.length];
-                colors = Arrays.fill(colors, DEFAULT_COLOR);
+                Arrays.fill(colors, DEFAULT_COLOR);
             }
             html_code = generateCircularGraph(name, labels, data, colors, isDoughnut);
         }
-        private static String generateCircularGraph(String name, String[] labels, int[] data, Color[] colors, boolean isDoughnut) {
+        private String generateCircularGraph(String name, String[] labels, int[] data, Color[] colors, boolean isDoughnut) {
             String type = isDoughnut ? "doughnut" : "pie";
-            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "'></canvas>";
+            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "' width=\"770\" height=\"385\" style=\"display: block; width: 770px; height: 385px;\"></canvas>";
             returnedHTMLCode += "<script>var ctx = document.getElementById('" + name.replace("'", "\\'") + "').getContext('2d');";
             returnedHTMLCode += "var myChart = new Chart(ctx, { type: '"+type+"', data: { labels: [";
             for(String label : labels) {
@@ -104,14 +118,14 @@ public class Webgen {
         }
     }
 
-    public class RadarGraph extends Graph {
+    public static class RadarGraph extends Graph {
         public RadarGraph(String name, String[] labels, int[] data, Color color) {
             if(color == null) {
-                colors = DEFAULT_COLOR;
+                color = DEFAULT_COLOR;
             }
-            html_code = generateRadarGrap(name, labels, data, color);
+            html_code = generateRadarGraph(name, labels, data, color);
         }
-        private static String generateRadarGraph(String name, String[] labels, int[] data, Color color) {
+        private String generateRadarGraph(String name, String[] labels, int[] data, Color color) {
             String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "'></canvas>";
             returnedHTMLCode += "<script>var ctx = document.getElementById('" + name.replace("'", "\\'") + "').getContext('2d');";
             returnedHTMLCode += "var myChart = new Chart(ctx, { type: 'radar', data: { labels: [";

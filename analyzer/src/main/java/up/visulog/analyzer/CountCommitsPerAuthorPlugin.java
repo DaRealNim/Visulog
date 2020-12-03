@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 
 public class CountCommitsPerAuthorPlugin extends Plugin {
@@ -64,12 +65,16 @@ public class CountCommitsPerAuthorPlugin extends Plugin {
 
         public Webgen.Graph[] getResultAsGraphArray() {
             ArrayList<String> labels = new ArrayList<String>();
-            ArrayList<int> data = new ArrayList<Integer>();
+            ArrayList<Integer> data = new ArrayList<Integer>();
             for (var item : commitsPerAuthor.entrySet()) {
                 labels.add(item.getKey());
                 data.add(Integer.valueOf(item.getValue()));
             }
-            return new Webgen.Graph[]{new Webgen.BarGraph("Commits per author", labels.toArray(new String[0]), data.toArray(new int[0]), null)};
+            String[] labelsArray = new String[labels.size()];
+            int[] dataArray = new int[data.size()];
+            for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
+            for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
+            return new Webgen.Graph[]{new Webgen.BarGraph("Commits per author - Bar", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length))};
         }
 
         @Override
