@@ -118,7 +118,19 @@ public class LinesPerUserPlugin extends Plugin{
             return html.toString();
 		}
 
-		public Webgen.Graph[] getResultAsGraphArray() {return null;}
+		public Webgen.Graph[] getResultAsGraphArray() {
+            ArrayList<String> labels = new ArrayList<String>();
+            ArrayList<Integer> data = new ArrayList<Integer>();
+            for (var item : linesAddedDeleted.entrySet()) {
+                labels.add(item.getKey());
+                data.add(Integer.valueOf(item.getValue().split("/")[0].replace(" ", "")));
+            }
+            String[] labelsArray = new String[labels.size()];
+            int[] dataArray = new int[data.size()];
+            for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
+            for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
+            return new Webgen.Graph[]{new Webgen.BarGraph("Commits per author - Bar", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length))};
+        }
 
 		@Override
 	    public String getDisplayName() {
