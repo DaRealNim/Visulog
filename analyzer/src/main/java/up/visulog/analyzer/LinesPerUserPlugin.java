@@ -8,6 +8,8 @@ import java.util.Map;
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
 import up.visulog.webgen.Webgen;
+import java.awt.Color;
+import java.util.Arrays;
 
 public class LinesPerUserPlugin extends Plugin{
 	private Result result;
@@ -121,15 +123,23 @@ public class LinesPerUserPlugin extends Plugin{
 		public Webgen.Graph[] getResultAsGraphArray() {
             ArrayList<String> labels = new ArrayList<String>();
             ArrayList<Integer> data = new ArrayList<Integer>();
+			ArrayList<Integer> data2 = new ArrayList<Integer>();
             for (var item : linesAddedDeleted.entrySet()) {
                 labels.add(item.getKey());
                 data.add(Integer.valueOf(item.getValue().split("/")[0].replace(" ", "")));
+				data2.add(Integer.valueOf(item.getValue().split("/")[1].replace(" ", "")));
             }
             String[] labelsArray = new String[labels.size()];
             int[] dataArray = new int[data.size()];
+			int[] dataArray2 = new int[data2.size()];
             for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
             for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
-            return new Webgen.Graph[]{new Webgen.BarGraph("Commits per author - Bar", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length))};
+			for(int i=0; i<dataArray2.length; i++) dataArray2[i] = data2.get(i);
+			Color[] c1 = new Color[dataArray.length];
+			Color[] c2 = new Color[dataArray.length];
+			Arrays.fill(c1, new Color(0, 255, 0));
+			Arrays.fill(c2, new Color(255, 0, 0));
+            return new Webgen.Graph[]{new Webgen.BarGraph("Commits per author - Bar", labelsArray, new String[]{"Lines added", "Lines deleted"}, new int[][]{dataArray, dataArray2}, new Color[][]{c1, c2})};
         }
 
 		@Override
