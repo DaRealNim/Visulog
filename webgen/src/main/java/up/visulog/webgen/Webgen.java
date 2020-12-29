@@ -38,7 +38,7 @@ public class Webgen {
             html_code = generateBarGraph(name, dataLabels, datasetsLabels, datasets, colors);
         }
         private String generateBarGraph(String name, String[] dataLabels, String[] datasetsLabels, int[][] datasets, Color[][] colors) {
-            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "' width=\"770\" height=\"385\" style=\"display: block; width: 770px; height: 385px;\"></canvas>";
+            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "' width=\"40em\" height=\"25em\" style=\"display: block; width: 40em; height: 25em;\"></canvas>";
             returnedHTMLCode += "<script>var ctx = document.getElementById('" + name.replace("'", "\\'") + "').getContext('2d');";
             returnedHTMLCode += "var myChart = new Chart(ctx, { type: 'bar', data: { labels: [";
             for(String label : dataLabels) {
@@ -103,7 +103,7 @@ public class Webgen {
         }
         private String generateCircularGraph(String name, String[] labels, int[] data, Color[] colors, boolean isDoughnut) {
             String type = isDoughnut ? "doughnut" : "pie";
-            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "' width=\"770\" height=\"385\" style=\"display: block; width: 770px; height: 385px;\"></canvas>";
+            String returnedHTMLCode = "<canvas id='" + name.replace("'", "\\'") + "' width=\"40em\" height=\"25em\" style=\"display: block; width: 40em; height: 25em;\"></canvas>";
             returnedHTMLCode += "<script>var ctx = document.getElementById('" + name.replace("'", "\\'") + "').getContext('2d');";
             returnedHTMLCode += "var myChart = new Chart(ctx, { type: '"+type+"', data: { labels: [";
             for(String label : labels) {

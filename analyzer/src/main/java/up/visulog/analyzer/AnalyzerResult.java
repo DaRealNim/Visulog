@@ -38,7 +38,7 @@ public class AnalyzerResult {
                         html_code += "</div><div class=\"row\">";
                         c = 0;
                     }
-                    html_code += "<div class=\"col-4\"><p>" + graph.getHTML() + "</p></div>";
+                    html_code += "<div class=\"col-4\"><p class=\"canvas-paragraph\">" + graph.getHTML() + "</p></div>";
                 }
                 html_code += "</div></div>";
             }
