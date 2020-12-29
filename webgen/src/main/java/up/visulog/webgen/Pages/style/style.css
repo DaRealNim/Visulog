@@ -21,7 +21,8 @@ body, html
 	align-items: center;
 }
 
-.container {
+.container
+{
 	max-width: 200vh;
 }
 
