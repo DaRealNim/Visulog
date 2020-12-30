@@ -5,23 +5,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class Commit {
     // FIXME: (some of) these fields could have more specialized types than String
     public final String id;
-    public final String date;
+    public final Date date;
     public final String author;
     public final String description;
     public final String mergedFrom;
     public final String stat; // number of insertions and deletions for each commit
 
-    public Commit(String id, String author, String date, String description, String mergedFrom, String stat) {
+    public Commit(String id, String author, String date, String description, String mergedFrom, String stat) throws ParseException {
         this.id = id;
         this.author = author;
-        this.date = date;
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy", Locale.ENGLISH); //format que donne git log
+        this.date = dateFormat.parse(date);
         this.description = description;
         this.mergedFrom = mergedFrom;
         this.stat = stat;
@@ -125,7 +131,7 @@ public class Commit {
             	builder.setStat(statistiques);
             }
             return Optional.of(builder.createCommit());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             parseError();
         }
         return Optional.empty(); // this is supposed to be unreachable, as parseError should never return
