@@ -1,6 +1,8 @@
 package up.visulog.analyzer;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 				authorsDone.add(i.author);
 				
 				//stock in result time average for each author
-				result.frequencyPerUser.put(i.author, timeAverage(tabTime(authorCommits)));
+				result.frequencyPerUser.put(i.author+" ("+authorCommits.size()+" commits au total)", timeAverage(tabTime(authorCommits)));
 			}
 		}
 		return result;
@@ -39,17 +41,19 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		for(Commit i : gitLog) {
 			if(i.author.equals(name)) authorCommits.add(i);
 		}
-        result.totalCommitsPerUser.put(name, authorCommits.size()); 
 		return authorCommits;
 	}
 
 	//return average time between each commit
-	public double timeAverage(double[] time) {
-		double average = 0;
+	public String timeAverage(double[] time) {
+		double somme = 0;
 		for(int i=0; i<time.length; i++) {
-			average += time[i];
+			somme += time[i];
 		}
-		return ((double) average/time.length);
+		double average = (double) somme/time.length;
+		DecimalFormat f = new DecimalFormat();
+		f.setMaximumFractionDigits(1);
+		return f.format(average);
 	}
 
 	//return a double[] of each time between two commits, this double[] will be use for timeAverage
@@ -72,9 +76,11 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		return tabTime;
 	}
 
-	//TODO 4: calcul de la période entre deux commits(en jour)
+	//calcul de la période entre deux commits(en jour)
 	public double timeBetweenTwoCommits(Commit a, Commit b) {
 		double time = 0;
+		long diff = (a.date).getTime() - (b.date).getTime();
+		time = (diff / (1000*60*60*24));
 		return time;
 	}
 	
@@ -92,28 +98,21 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 	
 	static class Result implements AnalyzerPlugin.Result {
 		
-		private final Map<String, Double> frequencyPerUser = new HashMap();
-		private final Map<String, Integer> totalCommitsPerUser = new HashMap();
+		private final Map<String, String> frequencyPerUser = new HashMap();
 		
 		@Override
 		public String getResultAsString() {
-			String s="";
-			for(HashMap.Entry<String,Double> d : frequencyPerUser.entrySet()) {
-				s+=d.getKey()+" : "+d.getValue()+" (sur ";
-				for(HashMap.Entry<String,Integer> i : totalCommitsPerUser.entrySet()) {
-				if(i.getKey().equals(d.getKey())) {
-					s+=i.getValue()+" commits) \n";
-				}
-				}
-			}
-			s+="\n";
-			return s;
+			return frequencyPerUser.toString();
 		}
 
 		@Override
 		public String getResultAsHtmlDiv() {
-			// TODO Auto-generated method stub
-			return null;
+			StringBuilder html = new StringBuilder("<div>Temps moyen entre deux commits (en jour): <ul>");
+            for (var item : frequencyPerUser.entrySet()) {
+                html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append(" jours</li>");
+            }
+            html.append("</ul></div>");
+            return html.toString();
 		}
 	
 	}
