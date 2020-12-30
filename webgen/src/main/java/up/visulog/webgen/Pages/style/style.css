@@ -9,6 +9,12 @@
 	display: inline-block;
 }
 
+.fas
+{
+	font-size: 2em;
+	float: right;
+}
+
 body, html
 {
 	height: 100%;

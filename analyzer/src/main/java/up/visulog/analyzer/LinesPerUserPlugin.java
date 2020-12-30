@@ -139,7 +139,7 @@ public class LinesPerUserPlugin extends Plugin{
 			Color[] c2 = new Color[dataArray.length];
 			Arrays.fill(c1, new Color(0, 255, 0));
 			Arrays.fill(c2, new Color(255, 0, 0));
-            return new Webgen.Graph[]{new Webgen.BarGraph("Lines per User", labelsArray, new String[]{"Lines added", "Lines deleted"}, new int[][]{dataArray, dataArray2}, new Color[][]{c1, c2})};
+            return new Webgen.Graph[]{new Webgen.BarGraph("<i class=\"fas fa-bars\"></i>","Lines per User", labelsArray, new String[]{"Lines added", "Lines deleted"}, new int[][]{dataArray, dataArray2}, new Color[][]{c1, c2})};
         }
 
 		@Override
