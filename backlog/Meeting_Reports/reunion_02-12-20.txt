@@ -1,0 +1,8 @@
+Compte rendu de la réunion du 02 décembre 2020
+
+- Webgen : la webgen est bien implémentée avec toutes les fonctionnalités 
+nécessaires pour l'affichage des résultats générés par les plugins implémentés.
+
+- Le plugin CountCommitsPerAuthor fonctionne parfaitement et il est compatible avec la webgen.
+- le plugin FrequencyPerUser lui aussi est relié avec la webgen et il génère maintenant des graphiques.
+- le plugin ActivityPerBranch qui calcule le nombre de commits par branche est fonctionnel lui aussi.   
