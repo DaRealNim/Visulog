@@ -7,6 +7,8 @@ import java.util.Map;
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.BranchCommits;
 import up.visulog.webgen.Webgen;
+import java.util.ArrayList;
+import java.awt.Color;
 
 public class ActivityPerBranchPlugin extends Plugin {
     private Result result;
@@ -55,7 +57,21 @@ public class ActivityPerBranchPlugin extends Plugin {
             return html.toString();
         }
 
-        public Webgen.Graph[] getResultAsGraphArray() {return null;}
+        public Webgen.Graph[] getResultAsGraphArray() {
+            ArrayList<String> labels = new ArrayList<String>();
+            ArrayList<Integer> data = new ArrayList<Integer>();
+            for (var item : nbCommitsPerBranch.entrySet()) {
+                labels.add(item.getKey());
+                data.add(Integer.valueOf(item.getValue()));
+            }
+            String[] labelsArray = new String[labels.size()];
+            int[] dataArray = new int[data.size()];
+            for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
+            for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
+            return new Webgen.Graph[]{
+                new Webgen.CircularGraph("<i class=\"fas fa-pen-fancy\"></i>","Number of commits per branch", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), false)
+            };
+        }
 
         @Override
         public String getDisplayName() {
