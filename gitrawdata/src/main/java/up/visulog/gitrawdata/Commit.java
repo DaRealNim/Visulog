@@ -5,33 +5,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class Commit {
     // FIXME: (some of) these fields could have more specialized types than String
     public final String id;
-    public final String date;
+    public final Date date;
     public final String author;
     public final String description;
     public final String mergedFrom;
     public final String stat; // number of insertions and deletions for each commit
 
-    public Commit(String id, String author, String date, String description, String mergedFrom, String stat) {
+    public Commit(String id, String author, String date, String description, String mergedFrom, String stat) throws ParseException {
         this.id = id;
         this.author = author;
-        this.date = date;
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy", Locale.ENGLISH); //format que donne git log
+        this.date = dateFormat.parse(date);
         this.description = description;
         this.mergedFrom = mergedFrom;
         this.stat = stat;
     }
 
-    // TODO: factor this out (similar code will have to be used for all git
-    // commands)
     public static List<Commit> parseLogFromCommand(Path gitPath) {
-        ProcessBuilder builder = new ProcessBuilder("git", "log", "--stat").directory(gitPath.toFile());
+        ProcessBuilder builder =
+                new ProcessBuilder("git", "log", "--shortstat").directory(gitPath.toFile());
         Process process;
         try {
             process = builder.start();
@@ -52,20 +56,14 @@ public class Commit {
         }
         return result;
     }
-
-    public static List<Commit> parseFromCommand(Path gitPath) {
-        Scanner sc = new Scanner(System.in);
-        ProcessBuilder builder;
-
-        String com = " ";
-        String opt = " ";
-        com = sc.nextLine();
-        opt = sc.nextLine();
-        if (!(opt.equals(" "))) {
-            builder = new ProcessBuilder("git", com, opt).directory(gitPath.toFile());
-        } else {
-            builder = new ProcessBuilder("git", com).directory(gitPath.toFile());
-        }
+    
+    public static BufferedReader parseFromCommand(Path gitPath,String command, String option) {
+    	ProcessBuilder builder;
+    	if(option!=null) {
+    		builder =new ProcessBuilder("git", command,option).directory(gitPath.toFile());
+    	}else {
+    		builder = new ProcessBuilder("git", command).directory(gitPath.toFile());
+    	}
         Process process;
         try {
             process = builder.start();
@@ -74,18 +72,9 @@ public class Commit {
         }
         InputStream is = process.getInputStream();// read the process output
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        return parse(reader);
+        return reader;
     }
-
-    public static List<Commit> parse(BufferedReader reader) { // prints the content of is
-        var result = new ArrayList<Commit>();
-        Optional<Commit> commit = parseCommit(reader);
-        while (commit.isPresent()) {
-            result.add(commit.get());
-            commit = parseCommit(reader);
-        }
-        return result;
-    }
+    
 
     /**
      * Parses a log item and outputs a commit object. Exceptions will be thrown in
@@ -153,7 +142,7 @@ public class Commit {
                 builder.setStat(statistiques);
             }
             return Optional.of(builder.createCommit());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             parseError();
         }
         return Optional.empty(); // this is supposed to be unreachable, as parseError should never return

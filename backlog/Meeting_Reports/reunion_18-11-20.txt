@@ -1,0 +1,7 @@
+Compte rendu de la réunion du 18 Novembre 2020
+
+Le développement semble avoir bien avancé, le webgen dispose d'un code HTML/CSS type
+pour être utilisé comme template et un code prototype basique existe. Les    plugins
+sont presques finalisés, seules quelques touches finales manquent. Nous sommes assez
+optimistes sur le compte rendu final, on pense tous pouvoir finir les objectifs   du
+product backlog à temps et rajouter quelques fonctionnalités en plus.
