@@ -8,5 +8,5 @@ build/*
 hamcrest-core-1.3.jar
 junit-4.13.jar
 
-
+Pages/*
 /bin/
