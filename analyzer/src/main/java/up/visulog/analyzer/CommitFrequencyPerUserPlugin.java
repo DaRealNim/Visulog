@@ -129,7 +129,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
             for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
             for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
             return new Webgen.Graph[]{
-                new Webgen.BarGraph("<i class=\"fas fa-pen-fancy\"></i>","Commit frequency", labelsArray, new String[]{"Time between two commits (days)"}, new double[][]{dataArray}, new Color[][]{Webgen.generateRandomColorArray(dataArray.length)})
+                new Webgen.BarGraph("<i class=\"far fa-calendar-alt\"></i>","Commit frequency", labelsArray, new String[]{"Time between two commits (days)"}, new double[][]{dataArray}, new Color[][]{Webgen.generateRandomColorArray(dataArray.length)})
             };
         }
 

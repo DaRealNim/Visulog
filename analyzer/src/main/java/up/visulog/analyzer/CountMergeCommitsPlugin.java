@@ -78,7 +78,7 @@ public class CountMergeCommitsPlugin extends Plugin {
             for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
             for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
             return new Webgen.Graph[]{
-                new Webgen.CircularGraph("<i class=\"fas fa-pen-fancy\"></i>","Merge vs non-merge commits", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), true)
+                new Webgen.CircularGraph("<i class=\"fas fa-sitemap\"></i>","Merge vs non-merge commits", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), true)
             };
         }
 

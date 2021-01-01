@@ -76,7 +76,7 @@ public class CountCommitsPerAuthorPlugin extends Plugin {
             for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
             for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
             return new Webgen.Graph[]{
-                new Webgen.BarGraph("<i class=\"fas fa-pen-fancy\"></i>","Commits per author - Bar", labelsArray, new String[]{"Commits per author - Bar"}, new double[][]{dataArray}, new Color[][]{Webgen.generateRandomColorArray(dataArray.length)})
+                new Webgen.BarGraph("<i class=\"fas fa-user\"></i>","Commits per author - Bar", labelsArray, new String[]{"Commits per author - Bar"}, new double[][]{dataArray}, new Color[][]{Webgen.generateRandomColorArray(dataArray.length)})
             };
         }
 

@@ -69,7 +69,7 @@ public class ActivityPerBranchPlugin extends Plugin {
             for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
             for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
             return new Webgen.Graph[]{
-                new Webgen.CircularGraph("<i class=\"fas fa-pen-fancy\"></i>","Number of commits per branch", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), false)
+                new Webgen.CircularGraph("<i class=\"fas fa-code-branch\"></i>","Number of commits per branch", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), false)
             };
         }
 
