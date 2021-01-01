@@ -10,6 +10,7 @@ import java.util.Map;
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
 import up.visulog.webgen.Webgen;
+import java.awt.Color;
 
 public class CommitFrequencyPerUserPlugin extends Plugin {
 
@@ -116,11 +117,25 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
             return html.toString();
 		}
 
-		public Webgen.Graph[] getResultAsGraphArray() {return null;}
+		public Webgen.Graph[] getResultAsGraphArray() {
+            ArrayList<String> labels = new ArrayList<String>();
+            ArrayList<Double> data = new ArrayList<Double>();
+            for (var item : frequencyPerUser.entrySet()) {
+                labels.add(item.getKey());
+                data.add(Double.valueOf(item.getValue().replace(",", ".")));
+            }
+            String[] labelsArray = new String[labels.size()];
+            double[] dataArray = new double[data.size()];
+            for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
+            for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
+            return new Webgen.Graph[]{
+                new Webgen.BarGraph("<i class=\"fas fa-pen-fancy\"></i>","Commit frequency", labelsArray, new String[]{"Time between two commits (days)"}, new double[][]{dataArray}, new Color[][]{Webgen.generateRandomColorArray(dataArray.length)})
+            };
+        }
 
 		@Override
 		public String getDisplayName() {
-			return "Commit frequency per users";
+			return "Time between commits per user";
 		}
 	}
 
