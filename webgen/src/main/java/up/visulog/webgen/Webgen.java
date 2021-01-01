@@ -127,39 +127,25 @@ public class Webgen {
     }
 
     public static class RadarGraph extends Graph {
-        public RadarGraph(String icon, String name, String[] dataLabels, String[] datasetsLabels, double[][] datasets, Color[][] colors) {
-            if(colors == null) {
-                colors = new Color[][]{new Color[dataLabels.length]};
-                Arrays.fill(colors, DEFAULT_COLOR);
+        public RadarGraph(String icon, String name, String[] labels, double[] data, Color color) {
+            if(color == null) {
+                color = DEFAULT_COLOR;
             }
-            html_code = generateRadarGraph(icon, name, dataLabels, datasetsLabels, datasets, colors);
+            html_code = generateRadarGraph(icon, name, labels, data, color);
         }
-        private String generateRadarGraph(String icon, String name, String[] dataLabels, String[] datasetsLabels, double[][] datasets, Color[][] colors) {
-            String returnedHTMLCode = icon + "<canvas id='" + name.replace("'", "\\'") + "' width=\"40em\" height=\"25em\" style=\"display: block; width: 40em; height: 25em;\"></canvas>";
+        private String generateRadarGraph(String icon, String name, String[] labels, double[] data, Color color) {
+            String returnedHTMLCode = icon + "<canvas id='" + name.replace("'", "\\'") + "'></canvas>";
             returnedHTMLCode += "<script>var ctx = document.getElementById('" + name.replace("'", "\\'") + "').getContext('2d');";
             returnedHTMLCode += "var myChart = new Chart(ctx, { type: 'radar', data: { labels: [";
-            for(String label : dataLabels) {
+            for(String label : labels) {
                 returnedHTMLCode += "'"+label.replace("'", "\\'")+"', ";
             }
-            returnedHTMLCode += "], datasets: [";
-            for(int i = 0; i < datasetsLabels.length; i++) {
-                returnedHTMLCode += "{ label: '" + datasetsLabels[i].replace("'", "\\'") + "',";
-                returnedHTMLCode += "data: [";
-                for(double height : datasets[i]) {
-                    returnedHTMLCode += String.valueOf(height) + ", ";
-                }
-                returnedHTMLCode += "], backgroundColor: [";
-                for(Color color : colors[i]) {
-                    returnedHTMLCode += "'rgba(" + String.valueOf(color.getRed()) + ", " + String.valueOf(color.getGreen()) + ", " + String.valueOf(color.getBlue()) + ", 0.2)', ";
-                }
-                returnedHTMLCode += "], borderColor: [";
-                for(Color color : colors[i]) {
-                    returnedHTMLCode += "'rgba(" + String.valueOf(color.getRed()) + ", " + String.valueOf(color.getGreen()) + ", " + String.valueOf(color.getBlue()) + ", 1)', ";
-                }
-                returnedHTMLCode += "], borderWidth : 1 },";
+            returnedHTMLCode += "], datasets: [{ label: '" + name.replace("'", "\\'") + "', data: [";
+            for(double height : data) {
+                returnedHTMLCode += String.valueOf(height) + ", ";
             }
-
-            returnedHTMLCode += "], options: { scales: { yAxes: [{ ticks: { beginAtZero: true }}]}}}});</script>\n";
+            returnedHTMLCode += "], backgroundColor: 'rgba(" + String.valueOf(color.getRed()) + ", " + String.valueOf(color.getGreen()) + ", " + String.valueOf(color.getBlue()) + ", 0.2)'";
+            returnedHTMLCode += ", borderWidth : 1 }]}, options: {scale: { angleLines: { display: false }, ticks: { suggestedMin: 0, suggestedMax: 100 } } }});</script>\n";
             return returnedHTMLCode;
         }
     }
