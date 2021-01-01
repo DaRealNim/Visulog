@@ -6,6 +6,7 @@ import java.util.Map;
 
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.BranchCommits;
+import up.visulog.webgen.Webgen;
 
 public class ActivityPerBranchPlugin extends Plugin {
     private Result result;
@@ -52,6 +53,13 @@ public class ActivityPerBranchPlugin extends Plugin {
             }
             html.append("</ul></div>");
             return html.toString();
+        }
+
+        public Webgen.Graph[] getResultAsGraphArray() {return null;}
+
+        @Override
+        public String getDisplayName() {
+            return "Activity per branch";
         }
     }
 }

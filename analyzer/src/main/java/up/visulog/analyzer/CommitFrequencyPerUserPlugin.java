@@ -9,6 +9,7 @@ import java.util.Map;
 
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
+import up.visulog.webgen.Webgen;
 
 public class CommitFrequencyPerUserPlugin extends Plugin {
 
@@ -18,7 +19,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		super(generalConfiguration);
 	}
 
-	//return the final result to run() with every users' frequency 
+	//return the final result to run() with every users' frequency
 	public Result frequencyPerUser(List<Commit> gitLog) {
 		var result = new Result();
 		List<String> authorsDone = new ArrayList<String>(); //list of authors who has commits
@@ -27,7 +28,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 				//create List<Commit> for this author
 				List<Commit> authorCommits = getCommitForThisAuthor(gitLog,i.author);
 				authorsDone.add(i.author);
-				
+
 				//stock in result time average for each author
 				result.frequencyPerUser.put(i.author+" ("+authorCommits.size()+" commits au total)", timeAverage(tabTime(authorCommits)));
 			}
@@ -83,7 +84,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 		time = (diff / (1000*60*60*24));
 		return time;
 	}
-	
+
 	@Override
 	public void run() {
 		result = frequencyPerUser(Commit.parseLogFromCommand(configuration.getGitPath()));
@@ -95,11 +96,11 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
             run();
         return result;
 	}
-	
+
 	static class Result implements AnalyzerPlugin.Result {
-		
+
 		private final Map<String, String> frequencyPerUser = new HashMap();
-		
+
 		@Override
 		public String getResultAsString() {
 			return frequencyPerUser.toString();
@@ -114,7 +115,15 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
             html.append("</ul></div>");
             return html.toString();
 		}
-	
+
+		public Webgen.Graph[] getResultAsGraphArray() {return null;}
+
+		@Override
+		public String getDisplayName() {
+			return "Commit frequency per users";
+		}
 	}
+
+
 
 }
