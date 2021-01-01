@@ -1,5 +1,7 @@
 package up.visulog.gitrawdata;
 
+import java.text.ParseException;
+
 public class CommitBuilder {
     private final String id;
     private String author;
@@ -39,7 +41,7 @@ public class CommitBuilder {
     	return this;
     }
 
-    public Commit createCommit() {
+    public Commit createCommit() throws ParseException {
         return new Commit(id, author, date, description, mergedFrom, stat);
     }
 }
