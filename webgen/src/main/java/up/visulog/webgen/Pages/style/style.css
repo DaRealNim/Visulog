@@ -9,6 +9,12 @@
 	display: inline-block;
 }
 
+.fas
+{
+	font-size: 2em;
+	float: right;
+}
+
 body, html
 {
 	height: 100%;
@@ -21,15 +27,15 @@ body, html
 	align-items: center;
 }
 
+.container
+{
+	max-width: 200vh;
+}
+
 .bg
 {
 	background-image: url("../img/background.jpg");
-
-	height: 100%;
-
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	background-repeat: repeat;
 }
 
 .fas

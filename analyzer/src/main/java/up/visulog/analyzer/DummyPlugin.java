@@ -3,6 +3,7 @@ package up.visulog.analyzer;
 import up.visulog.config.Configuration;
 
 import java.util.concurrent.TimeUnit;
+import up.visulog.webgen.Webgen;
 
 public class DummyPlugin extends Plugin {
     private Result result;
@@ -30,6 +31,7 @@ public class DummyPlugin extends Plugin {
         return result;
     }
 
+
     static class Result implements AnalyzerPlugin.Result {
         @Override
         public String getResultAsString() {
@@ -47,6 +49,13 @@ public class DummyPlugin extends Plugin {
             // return html.toString();
 
             return "<div>Stop right there, criminal scum! You have violated the law! Pay the court a fine or serve your sentence!</div>";
+        }
+
+        public Webgen.Graph[] getResultAsGraphArray() {return null;}
+
+        @Override
+        public String getDisplayName() {
+            return "Dummy plugin";
         }
     }
 }

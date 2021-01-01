@@ -7,97 +7,126 @@ import up.visulog.config.PluginConfig;
 import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Set;
+import java.util.Scanner;
 
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
+
+import java.awt.Desktop;
 
 public class CLILauncher {
-	public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
 
-		var config = makeConfigFromCommandLineArgs(args);
+        var config = makeConfigFromCommandLineArgs(args);
 
-		if (config.isPresent()) {
-			var analyzer = new Analyzer(config.get());
-			var results = analyzer.computeResults();
-			System.out.println(results.toHTML());
-		} else
-			displayHelpAndExit();
-	}
+        if (config.isPresent()) {
+            var analyzer = new Analyzer(config.get());
+            var results = analyzer.computeResults();
+            System.out.println(results.toHTML());
+            
+            File htmlFile = new File("../Pages/infoPage.html");
+            htmlFile.getParentFile().mkdirs();
 
-	static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
+            if (htmlFile.createNewFile())
+            {
+                System.out.println("File successfully created" + htmlFile.getAbsolutePath());
+                FileWriter fileWriter = new FileWriter(htmlFile);
+                fileWriter.write(results.toHTML());
+                fileWriter.flush();
+                fileWriter.close();
 
-		var gitPath = FileSystems.getDefault().getPath(".");
-		var plugins = new HashMap<String, PluginConfig>();
+                if (Desktop.isDesktopSupported())
+                {
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.open(htmlFile);
+                }
+            }
+            else
+            {
+                System.out.println("Filename specified already exists, please delete it or choose another path");
+                System.exit(0);
+            }
+        } 
+        else 
+            displayHelpAndExit();
+    }
 
-		for (var arg : args) {
-			if (arg.startsWith("--")) {
-				String[] parts = arg.split("=");
-				if (parts.length != 2)
-					return Optional.empty();
-				else {
-					String pName = parts[0];
-					String pValue = parts[1];
-					switch (pName) {
-						case "--addPlugin":
-							plugins.put(pValue, new PluginConfig() {
-							});
-							break;
-						case "--loadConfigFile":
-							try {
-								BufferedReader reader = new BufferedReader(new FileReader(pValue));
-								String fileConfig = "";
-								boolean fileNotRead = true;
+    static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
 
-								while (fileNotRead) { // Reads each argument and adds to config table
-									String iterationArgument = reader.readLine();
-									String iterationArgumentParts[] = iterationArgument.split("=");
+        var gitPath = FileSystems.getDefault().getPath(".");
+        var plugins = new HashMap<String, PluginConfig>();
 
-									if (!(iterationArgumentParts[0] == "--loadConfigFile")) // Ignores load argument
-										fileConfig += iterationArgument + " ";
+        for (var arg : args) {
+            if (arg.startsWith("--")) {
+                String[] parts = arg.split("=");
+                if (parts.length != 2) 
+                    return Optional.empty();
+                else {
+                    String pName = parts[0];
+                    String pValue = parts[1];
+                    switch (pName) {
+                        case "--addPlugin":
+                            plugins.put(pValue, new PluginConfig(){});
+                            break;
+                        case "--loadConfigFile":
+                            try {
+                                BufferedReader reader = new BufferedReader(new FileReader(pValue));
+                                String fileConfig = ""; 
+                                boolean fileNotRead = true;
 
-									if (iterationArgument == null)
-										fileNotRead = !fileNotRead;
-								}
+                                while (fileNotRead) { //Reads each argument and adds to config table
+                                    String iterationArgument = reader.readLine();
+                                    String iterationArgumentParts[] = iterationArgument.split("=");
 
-								String[] fileConfigTable = fileConfig.split(" ");
-								makeConfigFromCommandLineArgs(fileConfigTable);
-							} catch (IOException e) {
-							}
-							break;
-						case "--justSaveConfigFile":
-							try {
-								BufferedWriter writer = new BufferedWriter(new FileWriter(pValue));
-								for (var cfg : args) // Iterates through options
-									if (!(cfg.equals("--justSaveConfigFile=" + pValue))) // Does not write save option
-																							// to file.
-										writer.write(cfg + "\n");
-								writer.close();
-								System.exit(0); // Exits before analysis
-							} catch (IOException ex) {
-								System.out.println("Something went wrong.");
-							}
-							break;
-						default:
-							return Optional.empty();
-					}
-				}
-			} else
-				gitPath = FileSystems.getDefault().getPath(arg);
-		}
-		return Optional.of(new Configuration(gitPath, plugins));
-	}
+                                    if (!(iterationArgumentParts[0] == "--loadConfigFile")) //Ignores load argument
+                                        fileConfig += iterationArgument + " ";
 
-	// Hard coding command options seems to be the best solution, keep this list
-	// updated.
-	private static void displayHelpAndExit() {
-		System.out.println("Command not recognized, here's a list: \n");
-		System.out
-				.println("--justSaveConfigFile=path/file.txt \n Does no analysis and saves options to path/file.txt\n");
-		System.out.println("--loadConfigFile=path/file.txt \n Loads options from path/file.txt\n");
-		System.out.println("--addPlugin=path/plugin \n Uses plugin");
-		System.exit(0);
-	}
+                                    if (iterationArgument == null)
+                                        fileNotRead = !fileNotRead;
+                                }
+
+                                String[] fileConfigTable = fileConfig.split(" ");
+                                makeConfigFromCommandLineArgs(fileConfigTable);
+                            }
+                            catch (IOException e) {
+                            }
+                            break;
+                        case "--justSaveConfigFile":
+                            try {	
+                                BufferedWriter writer = new BufferedWriter(new FileWriter(pValue));
+                                for (var cfg : args) //Iterates through options
+                                    if (!(cfg.equals("--justSaveConfigFile=" + pValue))) //Does not write save option to file.
+                                        writer.write(cfg + "\n");
+                                writer.close();
+                                System.exit(0); //Exits before analysis
+                            }
+                            catch (IOException ex) {
+                                System.out.println("Something went wrong.");
+                            }
+                            break;
+                        default:
+                            return Optional.empty();
+                    }
+                }
+            } else
+                gitPath = FileSystems.getDefault().getPath(arg);
+        }
+        return Optional.of(new Configuration(gitPath, plugins));
+    }
+
+    //Hard coding command options seems to be the best solution, keep this list
+    //updated.
+    private static void displayHelpAndExit() {
+        System.out.println("Command not recognized, here's a list: \n");
+        System.out.println("--justSaveConfigFile=path/file.txt \n Does no analysis and saves options to path/file.txt\n");
+        System.out.println("--loadConfigFile=path/file.txt \n Loads options from path/file.txt\n");
+        System.out.println("--addPlugin=path/plugin \n Uses plugin");
+        System.exit(0);
+    }
 }
