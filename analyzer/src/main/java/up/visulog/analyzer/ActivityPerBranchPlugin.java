@@ -59,13 +59,13 @@ public class ActivityPerBranchPlugin extends Plugin {
 
         public Webgen.Graph[] getResultAsGraphArray() {
             ArrayList<String> labels = new ArrayList<String>();
-            ArrayList<Integer> data = new ArrayList<Integer>();
+            ArrayList<Double> data = new ArrayList<Double>();
             for (var item : nbCommitsPerBranch.entrySet()) {
                 labels.add(item.getKey());
-                data.add(Integer.valueOf(item.getValue()));
+                data.add(Double.valueOf(item.getValue()));
             }
             String[] labelsArray = new String[labels.size()];
-            int[] dataArray = new int[data.size()];
+            double[] dataArray = new double[data.size()];
             for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
             for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
             return new Webgen.Graph[]{

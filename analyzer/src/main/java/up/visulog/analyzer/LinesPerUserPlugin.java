@@ -122,16 +122,16 @@ public class LinesPerUserPlugin extends Plugin{
 
 		public Webgen.Graph[] getResultAsGraphArray() {
             ArrayList<String> labels = new ArrayList<String>();
-            ArrayList<Integer> data = new ArrayList<Integer>();
-			ArrayList<Integer> data2 = new ArrayList<Integer>();
+            ArrayList<Double> data = new ArrayList<Double>();
+			ArrayList<Double> data2 = new ArrayList<Double>();
             for (var item : linesAddedDeleted.entrySet()) {
                 labels.add(item.getKey());
-                data.add(Integer.valueOf(item.getValue().split("/")[0].replace(" ", "")));
-				data2.add(Integer.valueOf(item.getValue().split("/")[1].replace(" ", "")));
+                data.add(Double.valueOf(item.getValue().split("/")[0].replace(" ", "")));
+				data2.add(Double.valueOf(item.getValue().split("/")[1].replace(" ", "")));
             }
             String[] labelsArray = new String[labels.size()];
-            int[] dataArray = new int[data.size()];
-			int[] dataArray2 = new int[data2.size()];
+            double[] dataArray = new double[data.size()];
+			double[] dataArray2 = new double[data2.size()];
             for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
             for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
 			for(int i=0; i<dataArray2.length; i++) dataArray2[i] = data2.get(i);
@@ -139,7 +139,7 @@ public class LinesPerUserPlugin extends Plugin{
 			Color[] c2 = new Color[dataArray.length];
 			Arrays.fill(c1, new Color(0, 255, 0));
 			Arrays.fill(c2, new Color(255, 0, 0));
-            return new Webgen.Graph[]{new Webgen.BarGraph("<i class=\"fas fa-bars\"></i>","Lines per User", labelsArray, new String[]{"Lines added", "Lines deleted"}, new int[][]{dataArray, dataArray2}, new Color[][]{c1, c2})};
+            return new Webgen.Graph[]{new Webgen.BarGraph("<i class=\"fas fa-bars\"></i>","Lines per User", labelsArray, new String[]{"Lines added", "Lines deleted"}, new double[][]{dataArray, dataArray2}, new Color[][]{c1, c2})};
         }
 
 		@Override
