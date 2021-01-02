@@ -29,31 +29,24 @@ public class CLILauncher {
             var analyzer = new Analyzer(config.get());
             var results = analyzer.computeResults();
             System.out.println(results.toHTML());
-            
+
             File htmlFile = new File("../Pages/infoPage.html");
             htmlFile.getParentFile().mkdirs();
 
-            if (htmlFile.createNewFile())
-            {
-                System.out.println("File successfully created" + htmlFile.getAbsolutePath());
-                FileWriter fileWriter = new FileWriter(htmlFile);
-                fileWriter.write(results.toHTML());
-                fileWriter.flush();
-                fileWriter.close();
+            htmlFile.createNewFile();
+            System.out.println("File successfully created" + htmlFile.getAbsolutePath());
+            FileWriter fileWriter = new FileWriter(htmlFile);
+            fileWriter.write(results.toHTML());
+            fileWriter.flush();
+            fileWriter.close();
 
-                if (Desktop.isDesktopSupported())
-                {
-                    Desktop desktop = Desktop.getDesktop();
-                    desktop.open(htmlFile);
-                }
-            }
-            else
+            if (Desktop.isDesktopSupported())
             {
-                System.out.println("Filename specified already exists, please delete it or choose another path");
-                System.exit(0);
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(htmlFile);
             }
-        } 
-        else 
+        }
+        else
             displayHelpAndExit();
     }
 
@@ -65,7 +58,7 @@ public class CLILauncher {
         for (var arg : args) {
             if (arg.startsWith("--")) {
                 String[] parts = arg.split("=");
-                if (parts.length != 2) 
+                if (parts.length != 2)
                     return Optional.empty();
                 else {
                     String pName = parts[0];
@@ -77,7 +70,7 @@ public class CLILauncher {
                         case "--loadConfigFile":
                             try {
                                 BufferedReader reader = new BufferedReader(new FileReader(pValue));
-                                String fileConfig = ""; 
+                                String fileConfig = "";
                                 boolean fileNotRead = true;
 
                                 while (fileNotRead) { //Reads each argument and adds to config table
@@ -98,7 +91,7 @@ public class CLILauncher {
                             }
                             break;
                         case "--justSaveConfigFile":
-                            try {	
+                            try {
                                 BufferedWriter writer = new BufferedWriter(new FileWriter(pValue));
                                 for (var cfg : args) //Iterates through options
                                     if (!(cfg.equals("--justSaveConfigFile=" + pValue))) //Does not write save option to file.
