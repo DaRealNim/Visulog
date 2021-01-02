@@ -33,7 +33,6 @@ public class BranchCommits {
                 reader = new BufferedReader(new InputStreamReader(is));
                 result.add(new BranchCommits(branche, parseNbCommits(reader)));
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -41,6 +40,7 @@ public class BranchCommits {
     }
 
     private static List<String> getAllLocalBranches(Path gitPath) { /// permet de récuperer toutes les branches locales
+                                                                    /// et distantes
                                                                     /// utilisées dans le projet.
         ProcessBuilder getBranches = new ProcessBuilder("git", "branch", "--all");
         Process process;
