@@ -18,7 +18,7 @@ This tool can:
 
 ## Already existing similar tools
 
-- [gitstats](https://pypi.org/project/gitstats/) 
+- [gitstats](https://pypi.org/project/gitstats/)
 
 ## Technical means
 
@@ -41,11 +41,11 @@ Visulog contains the following modules:
 
 1. clone the repository
     ```
-    git clone git@gaufre.informatique.univ-paris-diderot.fr:adegorre/visulog.git
+    git clone git@gaufre.informatique.univ-paris-diderot.fr:teixeirc/visulog.git
     ```
    or
     ```
-    git clone https://gaufre.informatique.univ-paris-diderot.fr/adegorre/visulog.git
+    git clone https://gaufre.informatique.univ-paris-diderot.fr/teixeirc/visulog.git
     ```
 2. Enter the project folder
     ```
@@ -70,7 +70,7 @@ Currently, it can be run through gradle too. In order to pass program arguments,
 For instance
 
 ```
-./gradlew run --args='. --addPlugin=commitFrequencyPerUserPlugin --addPlugin=countCommitsPerAuthorPlugin --addPlugin=linesPerUserPlugin --addPlugin=activityPerBranchPlugin'
+./gradlew run --args='. --addPlugin=commitFrequencyPerUserPlugin --addPlugin=countCommitsPerAuthorPlugin --addPlugin=linesPerUserPlugin --addPlugin=activityPerBranchPlugin --addPlugin=CountMergeCommitsPlugin'
 ```
 
 Will count the commits of each author in the current branch of the git repository present in the current folder (".").
