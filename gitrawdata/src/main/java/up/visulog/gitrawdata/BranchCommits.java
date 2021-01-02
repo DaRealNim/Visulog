@@ -26,6 +26,7 @@ public class BranchCommits {
         List<BranchCommits> result = new ArrayList<>();
         for (String branche : branches) {
             try {
+                System.out.println(branche);
                 getNbCommits = new ProcessBuilder("git", "rev-list", "--count", branche);
                 process = getNbCommits.start();
                 is = process.getInputStream();
@@ -41,7 +42,7 @@ public class BranchCommits {
 
     private static List<String> getAllLocalBranches(Path gitPath) { /// permet de récuperer toutes les branches locales
                                                                     /// utilisées dans le projet.
-        ProcessBuilder getBranches = new ProcessBuilder("git", "branch");
+        ProcessBuilder getBranches = new ProcessBuilder("git", "branch", "--all");
         Process process;
         try {
             process = getBranches.start();
@@ -57,10 +58,12 @@ public class BranchCommits {
     private static List<String> parseBranch(BufferedReader reader) {
         List<String> branches = new ArrayList<>();
         reader.lines().forEach((s) -> {
-            if (s.trim().contains("*"))
-                branches.add(s.substring(2).trim());
-            else
-                branches.add(s.trim());
+            if (!s.contains("HEAD")) {
+                if (s.trim().contains("*"))
+                    branches.add(s.substring(2).trim());
+                else
+                    branches.add(s.trim());
+            }
         });
         return branches;
     }
