@@ -26,7 +26,6 @@ public class BranchCommits {
         List<BranchCommits> result = new ArrayList<>();
         for (String branche : branches) {
             try {
-                System.out.println(branche);
                 getNbCommits = new ProcessBuilder("git", "rev-list", "--count", branche);
                 process = getNbCommits.start();
                 is = process.getInputStream();
