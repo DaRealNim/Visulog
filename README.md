@@ -12,7 +12,8 @@ This tool can:
   - number of lines or characters added/deleted/changed
   - number of commits
   - number of merge commits
-- analyze the variations of these indicators in time: for instance sum then in a week, compute a daily average or an average in a sliding window, ...
+  - number of commits per branch
+- analyze the variations of these indicators in time: average between two commits
 - visualize the indicators as charts (histograms, pie charts, etc.) embedded in a generated web page.
 
 ## Already existing similar tools
@@ -69,7 +70,7 @@ Currently, it can be run through gradle too. In order to pass program arguments,
 For instance
 
 ```
-./gradlew run --args='. --addPlugin=countCommits'
+./gradlew run --args='. --addPlugin=commitFrequencyPerUserPlugin --addPlugin=countCommitsPerAuthorPlugin --addPlugin=linesPerUserPlugin --addPlugin=activityPerBranchPlugin'
 ```
 
 Will count the commits of each author in the current branch of the git repository present in the current folder (".").
