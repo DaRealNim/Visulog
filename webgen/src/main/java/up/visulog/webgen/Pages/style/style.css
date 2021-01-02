@@ -9,10 +9,11 @@
 	display: inline-block;
 }
 
-.fas
+.fa .far .fas
 {
 	font-size: 2em;
 	float: right;
+	position: relative;
 }
 
 body, html
