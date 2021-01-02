@@ -31,7 +31,7 @@ public class CommitFrequencyPerUserPlugin extends Plugin {
 				authorsDone.add(i.author);
 
 				//stock in result time average for each author
-				result.frequencyPerUser.put(i.author+" ("+authorCommits.size()+" commits au total)", timeAverage(tabTime(authorCommits)));
+				result.frequencyPerUser.put(i.author, timeAverage(tabTime(authorCommits)));
 			}
 		}
 		return result;
