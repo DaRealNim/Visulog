@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.awt.Color;
 
 public class ActivityPerBranchPlugin extends Plugin {
+    /**
+     * this plugin returns a list of branchCommits defined by the name and the
+     * numebr of commits on each branch
+     */
     private Result result;
 
     public ActivityPerBranchPlugin(Configuration generalConfiguration) {
@@ -49,6 +53,7 @@ public class ActivityPerBranchPlugin extends Plugin {
 
         @Override
         public String getResultAsHtmlDiv() {
+            // exporting data in html format
             StringBuilder html = new StringBuilder("<div>Number of Commits per branch: <ul>");
             for (var item : nbCommitsPerBranch.entrySet()) {
                 html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
@@ -66,11 +71,13 @@ public class ActivityPerBranchPlugin extends Plugin {
             }
             String[] labelsArray = new String[labels.size()];
             double[] dataArray = new double[data.size()];
-            for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
-            for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
-            return new Webgen.Graph[]{
-                new Webgen.CircularGraph("<i class=\"fas fa-code-branch\"></i>","Number of commits per branch", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), false)
-            };
+            for (int i = 0; i < labelsArray.length; i++)
+                labelsArray[i] = labels.get(i);
+            for (int i = 0; i < dataArray.length; i++)
+                dataArray[i] = data.get(i);
+            return new Webgen.Graph[] {
+                    new Webgen.CircularGraph("<i class=\"fas fa-code-branch\"></i>", "Number of commits per branch",
+                            labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), false) };
         }
 
         @Override
