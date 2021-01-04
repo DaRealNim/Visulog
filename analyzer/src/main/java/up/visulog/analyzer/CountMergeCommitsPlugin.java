@@ -11,8 +11,13 @@ import java.util.Map;
 import java.util.stream.IntStream;
 import java.awt.Color;
 
-
 public class CountMergeCommitsPlugin extends Plugin {
+
+    /**
+     * here we count merge commits only
+     * 
+     */
+
     private Result result;
 
     public CountMergeCommitsPlugin(Configuration generalConfiguration) {
@@ -20,12 +25,13 @@ public class CountMergeCommitsPlugin extends Plugin {
     }
 
     static Result processLog(List<Commit> gitLog) {
+        // taking the total number of commits then, substracting merge commits
         var result = new Result();
         int numberOfCommits = 0;
         int numberOfMergeCommits = 0;
         for (var commit : gitLog) {
             numberOfCommits++;
-            if(commit.mergedFrom != null)
+            if (commit.mergedFrom != null)
                 numberOfMergeCommits++;
         }
         numberOfCommits -= numberOfMergeCommits;
@@ -45,8 +51,6 @@ public class CountMergeCommitsPlugin extends Plugin {
             run();
         return result;
     }
-
-
 
     static class Result implements AnalyzerPlugin.Result {
         private final Map<String, Integer> mergeCommits = new HashMap<>();
@@ -75,11 +79,13 @@ public class CountMergeCommitsPlugin extends Plugin {
             }
             String[] labelsArray = new String[labels.size()];
             double[] dataArray = new double[data.size()];
-            for(int i=0; i<labelsArray.length; i++) labelsArray[i] = labels.get(i);
-            for(int i=0; i<dataArray.length; i++) dataArray[i] = data.get(i);
-            return new Webgen.Graph[]{
-                new Webgen.CircularGraph("<i class=\"fas fa-sitemap\"></i>","Merge vs non-merge commits", labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), true)
-            };
+            for (int i = 0; i < labelsArray.length; i++)
+                labelsArray[i] = labels.get(i);
+            for (int i = 0; i < dataArray.length; i++)
+                dataArray[i] = data.get(i);
+            return new Webgen.Graph[] {
+                    new Webgen.CircularGraph("<i class=\"fas fa-sitemap\"></i>", "Merge vs non-merge commits",
+                            labelsArray, dataArray, Webgen.generateRandomColorArray(dataArray.length), true) };
         }
 
         @Override
